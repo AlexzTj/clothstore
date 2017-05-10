@@ -504,6 +504,7 @@ h1 {
   -ms-transform-style: preserve-3d;
   transform-style: preserve-3d;
   position: relative;
+  display: block;
 }
 #content .product .front,
 #content .product .back {

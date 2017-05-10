@@ -1,6 +1,6 @@
 
 $(function() {
-
+	
     animations();
     productDetailGallery(4000);
     carousels();
@@ -23,6 +23,7 @@ $(window).resize(function() {
 
 function productDetailGallery(confDetailSwitch) {
     $('.thumb:first').addClass('active');
+    $('#mainImage img').attr('src',  $('.thumb:first').attr('href'));
     timer = setInterval(autoSwitch, confDetailSwitch);
     $(".thumb").click(function(e) {
 
