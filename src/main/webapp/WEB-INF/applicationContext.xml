@@ -38,4 +38,12 @@
         <property name="maxUploadSize" value="#{10*3*1024*1024}"/>
     </bean>
 
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>message</value>
+            </list>
+        </property>
+    </bean>
 </beans>

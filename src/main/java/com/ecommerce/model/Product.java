@@ -3,11 +3,17 @@ package com.ecommerce.model;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 
 @Entity
@@ -15,16 +21,24 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+    @NotBlank(message = "please specify product name")
     private String title;
     @Column(nullable = false)
+    @NotBlank(message = "please specify product code")
     private String productCode;
     private String description;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
     @Column(nullable = false)
+    @NotNull
+    @Digits(message = "must have proper format", integer = 5, fraction = 2)
+    @Min(value = 0,message = "price can not be negative value")
     private Double price;
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<Image> imageMetaSet = Collections.emptySet();
+    private List<Image> imageMetaSet = Collections.emptyList();
 
     public Product() {
     }
@@ -70,11 +84,11 @@ public class Product {
         this.category = category;
     }
 
-    public Set<Image> getImageMetaSet() {
+    public List<Image> getImageMetaSet() {
         return imageMetaSet;
     }
 
-    public void setImageMetaSet(Set<Image> imageMetaSet) {
+    public void setImageMetaSet(List<Image> imageMetaSet) {
         this.imageMetaSet = imageMetaSet;
     }
 
@@ -84,6 +98,14 @@ public class Product {
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
+    }
+
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void addImage(Image image) {

@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.hibernate.query.Query;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.NoResultException;
 import java.util.*;
 
 @Repository
-
 public class CategoryDaoImpl implements CategoryDao, ApplicationListener<ContextRefreshedEvent> {
     @Autowired
     private SessionFactory sessionFactory;
@@ -40,10 +40,17 @@ public class CategoryDaoImpl implements CategoryDao, ApplicationListener<Context
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-//        Category category = new Category();
-//        category.setName("products");
-//        category.setDescription("some description");
-//        addCategory(category);
+        Session session = sessionFactory.getCurrentSession();
+        try {
+            Query query = session.createQuery("from Category c where c.name='default'");
+            Category c = (Category) query.getSingleResult();
+        }catch (NoResultException e){
+            Category category = new Category();
+            category.setName("default");
+            category.setDescription("some description");
+            session.saveOrUpdate(category);
+        }
     }
 }

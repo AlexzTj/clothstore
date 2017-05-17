@@ -12,8 +12,9 @@
 
             <div class="box" id="text-page">
                 <div th:if="${errMsg}" th:insert="layouts/fragments :: alert(type= 'danger', message = ${errMsg})" th:remove="tag"></div>
-                <h3>Add product</h3>
-                <form action="#" th:action="@{/admin/addProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+                <h3>Edit product</h3>
+                <form action="#" th:action="@{/admin/editProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" th:field="*{id}" />
                     <div class="form-group"  th:classappend="${#fields.hasErrors('title')}? has-error">
                         <label  th:for="${#ids.next('title')}" th:text="Title">Title</label>
                         <input type="text" th:field="*{title}"  class="form-control" placeholder="Title" />

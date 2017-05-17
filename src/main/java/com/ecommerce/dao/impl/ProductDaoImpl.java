@@ -2,6 +2,7 @@ package com.ecommerce.dao.impl;
 
 import com.ecommerce.dao.ProductDao;
 import com.ecommerce.model.Image;
+import com.ecommerce.model.ImageType;
 import com.ecommerce.model.Product;
 import com.ecommerce.service.StorageService;
 import org.hibernate.Session;
@@ -13,10 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.util.List;
 import java.util.Map;
 
@@ -56,8 +54,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public List<Product> fetchProductsWithFeaturedImage(int limit) {
         Session session = sessionFactory.getCurrentSession();
-
         return session.createQuery("from Product as p   " +
-                "left join fetch p.imageMetaSet image where image.type = 'FEATURED'").setMaxResults(limit).getResultList();
+                "left join fetch p.imageMetaSet image where image.type = 'FEATURED' order by p.timestamp desc").setMaxResults(limit).getResultList();
     }
 }

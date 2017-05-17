@@ -23,9 +23,7 @@ import java.time.chrono.IsoChronology;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.ResolverStyle;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -55,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         Map<String, MultipartFile> imagesMap = imagesFiltered.stream().collect(Collectors.toMap(
                 f -> "attachment_" + System.nanoTime() + "." + StringUtils.getFilenameExtension(f.getOriginalFilename())
                 , Function.identity()));
-        product.setImageMetaSet(new HashSet<>());
+        product.setImageMetaSet(new ArrayList<>());
         setupImages(product, imagesMap);
         //store in db
         productDao.addProduct(product);

@@ -9,15 +9,15 @@
     <div class="flip-container">
         <a class="flipper" th:href="@{detail/{id}(id=${product.id})}">
             <div class="front">
-                <img th:src="@{${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+                <img th:src="@{${rootDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
             </div>
             <div class="back">
-                <img th:src="@{${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+                <img th:src="@{${rootDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
             </div>
         </a>
     </div>
     <a th:href="@{detail/{id}(id=${product.id})}" class="invisible">
-        <img th:src="@{${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+        <img th:src="@{${rootDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
     </a>
     <div class="text">
         <h3 th:text="${product.title}">Fur coat with very but very very long name</h3>

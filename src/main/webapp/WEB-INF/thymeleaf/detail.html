@@ -62,8 +62,8 @@
                     <div class="row" id="thumbs">
                             <div class="col-xs-4"
                                  th:each="img : ${product.imageMetaSet}">
-                                <a th:href="@{${img.mainImage}}" class="thumb">
-                                    <img th:src="@{${img.thumbnail}}" alt="" class="img-responsive">
+                                <a th:href="@{${rootDir}+${img.imagePath}}" class="thumb">
+                                    <img th:src="@{${rootDir}+${img.imagePath}}" alt="" class="img-responsive">
                                 </a>
                             </div>
                     </div>
