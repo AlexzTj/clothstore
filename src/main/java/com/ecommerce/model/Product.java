@@ -1,17 +1,34 @@
 package com.ecommerce.model;
 
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.persistence.*;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
-public class Product {
 
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String title;
+    @Column(nullable = false)
+    private String productCode;
     private String description;
+    @Column(nullable = false)
     private Double price;
+    @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Image> imageMetaSet = Collections.emptySet();
+
+    public Product() {
+    }
+
 
     public Integer getId() {
         return id;
@@ -59,5 +76,42 @@ public class Product {
 
     public void setImageMetaSet(Set<Image> imageMetaSet) {
         this.imageMetaSet = imageMetaSet;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public void addImage(Image image) {
+        imageMetaSet.add(image);
+        image.setProduct(this);
+    }
+
+    public void removeImage(Image image) {
+        imageMetaSet.remove(image);
+        image.setProduct(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+        return Objects.equals(getProductCode(), product.getProductCode());
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getProductCode()).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

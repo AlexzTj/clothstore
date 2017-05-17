@@ -1,15 +1,15 @@
-package com.ecommerce.dao;
+package com.ecommerce.service;
 
 
 import com.ecommerce.model.Product;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
-public interface ProductDao {
-
+public interface ProductService {
     void addProduct(Product product);
+
+    void addProductWithImages(Product product, List<MultipartFile> images);
 
     void deleteProduct(Integer productId);
 

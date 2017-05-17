@@ -1,14 +1,28 @@
 package com.ecommerce.model;
 
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import javax.persistence.*;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 
+@Entity
 public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Access(AccessType.PROPERTY)
     private Integer id;
+    @Column(nullable = false)
     private String name;
     private String description;
-    Set<Product> productSet = Collections.emptySet();
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<Product> productSet = Collections.emptySet();
+
+    public Category() {
+    }
 
     public Integer getId() {
         return id;
@@ -20,10 +34,6 @@ public class Category {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Set<Product> getProductSet() {
@@ -38,7 +48,41 @@ public class Category {
         return description;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public void addProduct(Product product) {
+        productSet.add(product);
+        product.setCategory(this);
+    }
+
+    public void removeProduct(Product product) {
+        productSet.remove(product);
+        product.setCategory(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Category category = (Category) o;
+        return Objects.equals(getName(), category.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(getName()).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
 }

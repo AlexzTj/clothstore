@@ -506,6 +506,9 @@ h1 {
   position: relative;
   display: block;
 }
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
 #content .product .front,
 #content .product .back {
   -webkit-backface-visibility: hidden;

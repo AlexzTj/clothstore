@@ -5,8 +5,17 @@ $(function() {
     productDetailGallery(4000);
     carousels();
     utils();
+
+    $('[data-toggle=confirmation]').confirmation({
+        rootSelector: '[data-toggle=confirmation]'
+    });
+
+
 });
 
+$(".alert").fadeTo(1000, 500).fadeOut(4000, function(){
+    $(this).alert('close');
+});
 
 $(window).load(function() {
     $(this).alignElementsSameHeight();

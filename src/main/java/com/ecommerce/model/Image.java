@@ -1,11 +1,31 @@
 package com.ecommerce.model;
 
-public class Image {
-    private Integer id;
-    private Product product;
-    private String mainImage;
-    private String thumbnail;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.*;
+
+@Entity
+public class Image {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
+    @ManyToOne
+    private Product product;
+    private String title;
+    @Enumerated(EnumType.STRING)
+    private ImageType type;
+    @Column(nullable = false)
+    private String imagePath;
+
+    public Image(String imagePath, ImageType type) {
+        this.imagePath = imagePath;
+        this.type = type;
+    }
+
+    public Image() {
+    }
 
     public Integer getId() {
         return id;
@@ -23,19 +43,44 @@ public class Image {
         this.product = product;
     }
 
-    public String getMainImage() {
-        return mainImage;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setMainImage(String mainImage) {
-        this.mainImage = mainImage;
+
+    public String getTitle() {
+        return title;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Image image = (Image) o;
+
+        return new EqualsBuilder()
+                .append(getImagePath(), image.getImagePath())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getImagePath())
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
