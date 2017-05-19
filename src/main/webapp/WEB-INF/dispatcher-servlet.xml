@@ -7,9 +7,10 @@
 
     <context:property-placeholder location="classpath:app.properties" />
     <context:component-scan base-package="com.ecommerce"/>
-    <mvc:annotation-driven conversion-service="conversionService"/>
+    <mvc:annotation-driven  ignore-default-model-on-redirect="true"  conversion-service="conversionService"/>
 
     <mvc:resources mapping="/resources/**" location="/resources/"/>
+    <mvc:resources mapping="/uploads/*" location="/uploads/"/>
 
     <!-- SpringResourceTemplateResolver automatically integrates with Spring's own -->
     <!-- resource resolution infrastructure, which is highly recommended.          -->
@@ -46,6 +47,7 @@
         <property name="converters">
             <set>
                 <bean class="com.ecommerce.model.converter.CategoryIdToCategory" />
+                <bean class="com.ecommerce.model.converter.StringToDate" />
             </set>
         </property>
     </bean>

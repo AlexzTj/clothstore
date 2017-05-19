@@ -20,6 +20,7 @@ import java.util.Objects;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Access(AccessType.PROPERTY)
     private Integer id;
     @NotBlank(message = "please specify product name")
     private String title;

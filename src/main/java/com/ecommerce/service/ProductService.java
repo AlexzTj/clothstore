@@ -11,9 +11,13 @@ public interface ProductService {
 
     void addProductWithImages(Product product, List<MultipartFile> images);
 
+    void updateProduct(Product product);
+
     void deleteProduct(Integer productId);
 
     Product getProductById(Integer id);
+
+    Product getProductById(Integer id, boolean fetchAll);
 
     List<Product> getAllProducts();
 

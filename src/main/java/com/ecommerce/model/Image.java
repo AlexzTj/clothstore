@@ -47,6 +47,13 @@ public class Image {
         return imagePath;
     }
 
+    public ImageType getType() {
+        return type;
+    }
+
+    public void setType(ImageType type) {
+        this.type = type;
+    }
 
     public String getTitle() {
         return title;

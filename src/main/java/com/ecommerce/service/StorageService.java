@@ -16,10 +16,9 @@ public class StorageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageService.class);
     private final Path rootDir;
 
-    public StorageService(@Value("${upload.dir}") String rootDir) {
-        this.rootDir = Paths.get(rootDir);
+    public StorageService(@Value("#{servletContext.getRealPath('/uploads/')}") String path){
+        rootDir = Paths.get(path);
     }
-
     public void store(String fileName, MultipartFile file) throws IOException {
         Files.copy(file.getInputStream(), rootDir.resolve(fileName));
     }

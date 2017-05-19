@@ -1,25 +1,16 @@
 package com.ecommerce.dao.impl;
 
 import com.ecommerce.dao.ProductDao;
-import com.ecommerce.model.Image;
-import com.ecommerce.model.ImageType;
 import com.ecommerce.model.Product;
-import com.ecommerce.service.StorageService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
-import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.criteria.*;
 import java.util.List;
-import java.util.Map;
 
 @Repository
-@Transactional
 public class ProductDaoImpl implements ProductDao {
     @Autowired
     private SessionFactory sessionFactory;
@@ -31,15 +22,28 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void deleteProduct(Integer productId) {
+    public void updateProduct(Product product) {
         Session session = sessionFactory.getCurrentSession();
-        session.delete(getProductById(productId));
+        session.update(product);
     }
 
     @Override
-    public Product getProductById(Integer id) {
+    public void deleteProduct(Integer productId) {
         Session session = sessionFactory.getCurrentSession();
-        Product product = session.get(Product.class, id);
+        session.delete(getProductById(productId,false));
+    }
+
+    @Override
+    public Product getProductById(Integer id, boolean fetchAll) {
+        Session session = sessionFactory.getCurrentSession();
+        Product product;
+        if(fetchAll){
+           product = (Product) session.createQuery("from Product p join fetch p.category left join fetch p.imageMetaSet where p.id = :id")
+                   .setParameter("id",id)
+                   .getSingleResult();
+        }else {
+            product = session.get(Product.class, id);
+        }
         return product;
     }
 

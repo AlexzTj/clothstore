@@ -14,5 +14,4 @@ SELECT
   imagemetas1_.product_id AS product_5_1_0__,
   imagemetas1_.id         AS id1_1_0__
 FROM Product product0_ LEFT OUTER JOIN Image imagemetas1_ ON product0_.id = imagemetas1_.product_id
-WHERE imagemetas1_.type = 'FEATURED'
-ORDER BY product0_.timestamp DESC
+WHERE product0_.id = ?

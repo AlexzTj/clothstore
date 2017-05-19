@@ -68,6 +68,11 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public void updateProduct(Product product) {
+        productDao.updateProduct(product);
+    }
+
     private List<MultipartFile> filterImages(List<MultipartFile> files) {
         Predicate<MultipartFile> imgFilter = f -> {
             if (f.isEmpty()) return false;
@@ -92,7 +97,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(Integer id) {
-        return productDao.getProductById(id);
+        return getProductById(id, false);
+    }
+
+    @Override
+    public Product getProductById(Integer id, boolean fetchAll) {
+        return productDao.getProductById(id, fetchAll);
     }
 
     @Override
