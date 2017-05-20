@@ -13,7 +13,7 @@ public class GeneralController {
 
     @ModelAttribute("uploadDir")
     public String getRootDir(){
-        return System.getProperty("java.io.tmpdir");
+        return "/uploads/";
     }
     @Autowired
     protected CategoryDao categoryDao;

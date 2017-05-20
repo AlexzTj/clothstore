@@ -30,13 +30,15 @@ public class Product {
     private String productCode;
     private String description;
     @CreationTimestamp
-   @Column(updatable = false)
+    @Column(updatable = false)
     private LocalDateTime timestamp;
     @Column(nullable = false)
     @NotNull
     @Digits(message = "must have proper format", integer = 5, fraction = 2)
     @Min(value = 0, message = "price can not be negative value")
     private Double price;
+    @Column(name = "special")
+    private boolean onSpecialOffer;
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -45,6 +47,13 @@ public class Product {
     public Product() {
     }
 
+    public boolean isOnSpecialOffer() {
+        return onSpecialOffer;
+    }
+
+    public void setOnSpecialOffer(boolean onSpecialOffer) {
+        this.onSpecialOffer = onSpecialOffer;
+    }
 
     public Integer getId() {
         return id;

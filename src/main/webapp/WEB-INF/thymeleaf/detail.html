@@ -28,18 +28,17 @@
                         <img src="" alt="" class="img-responsive">
                     </div>
 
-                    <div class="ribbon sale">
+                    <div th:if="${product.onSpecialOffer}" class="ribbon sale">
                         <div class="theribbon">SALE</div>
                         <div class="ribbon-background"></div>
                     </div>
                     <!-- /.ribbon -->
 
-                    <div class="ribbon new">
+                    <div th:if="${T(com.ecommerce.service.ProductUtils).isNew(product)}" class="ribbon new">
                         <div class="theribbon">NEW</div>
                         <div class="ribbon-background"></div>
                     </div>
                     <!-- /.ribbon -->
-
                 </div>
                 <div class="col-sm-6">
                     <div class="box">
@@ -62,8 +61,8 @@
                     <div class="row" id="thumbs">
                             <div class="col-xs-4"
                                  th:each="img : ${product.imageMetaSet}">
-                                <a th:href="@{${rootDir}+${img.imagePath}}" class="thumb">
-                                    <img th:src="@{${rootDir}+${img.imagePath}}" alt="" class="img-responsive">
+                                <a th:href="@{${uploadDir}+${img.imagePath}}" class="thumb">
+                                    <img th:src="@{${uploadDir}+${img.imagePath}}" alt="" class="img-responsive">
                                 </a>
                             </div>
                     </div>

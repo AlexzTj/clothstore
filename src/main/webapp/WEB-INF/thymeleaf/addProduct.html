@@ -30,6 +30,11 @@
                         <input type="text" th:field="*{price}"  class="form-control" placeholder="price" />
                         <small class="text-danger" th:errors="*{price}"></small>
                     </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" th:field="*{onSpecialOffer}"/> On Sale
+                        </label>
+                    </div>
                     <div class="form-group">
                         <label th:text="Category">Category</label>
                         <select th:field="*{category}" class="form-control">
@@ -39,11 +44,13 @@
                     </select>
                     </div>
                     <div class="form-group">
-                        <label>Featured image</label>
-                        <input type="file" name="featured" /><br/><br/>
-                        <label>Gallery images</label>
-                        <input type="file" name="image" />
-                        <input type="file" name="image" />
+                        <label>Featured image</label><br>
+                        <input type="file" name="featured[]" id="featuredUpload"/><br/><br/>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Gallery images</label><br>
+                        <input id="galleryUpload" type="file" name="files[]"/>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
