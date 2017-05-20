@@ -11,7 +11,7 @@ public interface ProductService {
 
     void addProductWithImages(Product product, List<MultipartFile> images);
 
-    void updateProduct(Product product);
+    void updateProduct(Product product, List<MultipartFile> images);
 
     void deleteProduct(Integer productId);
 

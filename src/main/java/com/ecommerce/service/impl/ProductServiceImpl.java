@@ -10,26 +10,17 @@ import com.ecommerce.service.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.joda.DateTimeFormatterFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.chrono.IsoChronology;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.format.ResolverStyle;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
-import static java.time.format.DateTimeFormatter.ISO_LOCAL_TIME;
 
 @Service
 @Transactional
@@ -48,15 +39,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void addProductWithImages(Product product, List<MultipartFile> files) {
-        List<MultipartFile> imagesFiltered = filterImages(files);
+        processProductWithImages(product,files,productDao::addProduct);
+    }
 
+    @Override
+    public void updateProduct(Product product, List<MultipartFile> files) {
+        processProductWithImages(product,files,productDao::updateProduct);
+    }
+
+    private void processProductWithImages(Product product, List<MultipartFile> files,Consumer<Product> operation){
+        List<MultipartFile> imagesFiltered = filterImages(files);
         Map<String, MultipartFile> imagesMap = imagesFiltered.stream().collect(Collectors.toMap(
                 f -> "attachment_" + System.nanoTime() + "." + StringUtils.getFilenameExtension(f.getOriginalFilename())
                 , Function.identity()));
         product.setImageMetaSet(new ArrayList<>());
         setupImages(product, imagesMap);
         //store in db
-        productDao.addProduct(product);
+        operation.accept(product);
         //store in upload folder
         for (Map.Entry<String, MultipartFile> e : imagesMap.entrySet()) {
             try {
@@ -68,25 +67,20 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @Override
-    public void updateProduct(Product product) {
-        productDao.updateProduct(product);
-    }
-
     private List<MultipartFile> filterImages(List<MultipartFile> files) {
         Predicate<MultipartFile> imgFilter = f -> {
             if (f.isEmpty()) return false;
             String ext = StringUtils.getFilenameExtension(f.getOriginalFilename());
-            return ext != null && ext.matches("(jpg|png)");
+            return ext != null && ext.matches("(jpe?g|png)");
         };
 
         return files.stream().filter(imgFilter).collect(Collectors.toList());
     }
-
+    
     private void setupImages(Product product, Map<String, MultipartFile> images) {
         for (Map.Entry<String, MultipartFile> image : images.entrySet()) {
             product.addImage(new Image(image.getKey(),
-                    image.getValue().getName().equals("featured") ? ImageType.FEATURED : ImageType.GALLERY));
+                    image.getValue().getName().startsWith("featured") ? ImageType.FEATURED : ImageType.GALLERY));
         }
     }
 

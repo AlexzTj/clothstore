@@ -15,6 +15,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Access(AccessType.PROPERTY)
+    @Column(updatable = false, nullable = false)
     private Integer id;
     @Column(nullable = false, unique = true)
     @NotBlank(message = "please specify category name")

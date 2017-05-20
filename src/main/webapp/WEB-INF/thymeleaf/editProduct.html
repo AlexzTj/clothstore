@@ -11,51 +11,50 @@
         <div class="col-md-12">
 
             <div class="box" id="text-page">
-                <div th:if="${errMsg}" th:insert="layouts/fragments :: alert(type= 'danger', message = ${errMsg})" th:remove="tag"></div>
+                <div th:if="${errMsg}" th:insert="layouts/fragments :: alert(type= 'danger', message = ${errMsg})"
+                     th:remove="tag"></div>
                 <h3>Edit product</h3>
-                <form action="#" th:action="@{/admin/editProduct}" th:object="${product}" method="post" enctype="multipart/form-data">
-                    <input type="hidden" th:field="*{id}" />
-                    <input type="hidden" th:field="*{timestamp}" />
-                    <div class="form-group"  th:classappend="${#fields.hasErrors('title')}? has-error">
-                        <label  th:for="${#ids.next('title')}" th:text="Title">Title</label>
-                        <input type="text" th:field="*{title}"  class="form-control" placeholder="Title" />
+                <form action="#" th:action="@{/admin/editProduct}" th:object="${product}" method="post"
+                      enctype="multipart/form-data">
+                    <input type="hidden" th:field="*{id}"/>
+                    <div class="form-group" th:classappend="${#fields.hasErrors('title')}? has-error">
+                        <label th:for="${#ids.next('title')}" th:text="Title">Title</label>
+                        <input type="text" th:field="*{title}" class="form-control" placeholder="Title"/>
                         <small class="text-danger" th:errors="*{title}">Title</small>
                     </div>
                     <div class="form-group" th:classappend="${#fields.hasErrors('productCode')}? has-error">
                         <label th:for="${#ids.next('productCode')}">Product code</label>
-                        <input type="text" th:field="*{productCode}"  class="form-control" placeholder="product code" />
+                        <input type="text" th:field="*{productCode}" class="form-control" placeholder="product code"/>
                         <small class="text-danger" th:errors="*{productCode}">Product</small>
 
                     </div>
-                    <div class="form-group"  th:classappend="${#fields.hasErrors('price')}? has-error">
+                    <div class="form-group" th:classappend="${#fields.hasErrors('price')}? has-error">
                         <label th:for="${#ids.next('price')}" th:text="Price">Price</label>
-                        <input type="text" th:field="*{price}"  class="form-control" placeholder="price" />
+                        <input type="text" th:field="*{price}" class="form-control" placeholder="price"/>
                         <small class="text-danger" th:errors="*{price}"></small>
                     </div>
                     <div class="form-group">
                         <label th:text="Category">Category</label>
                         <label th:text="${product.category.id}">Category</label>
                         <select th:field="*{category.id}" class="form-control">
-                        <option th:each="cat : ${catList}"
-                                th:value="${cat.id}"
-                                th:selected="${cat.id} eq *{category.id}"
-                                th:text="${cat.name}">Category</option>
-                    </select>
+                            <option th:each="cat : ${catList}"
+                                    th:value="${cat.id}"
+                                    th:selected="${cat.id} eq *{category.id}"
+                                    th:text="${cat.name}">Category
+                            </option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label>Featured image</label>
-                        <img th:if="${featuredImg}" th:src="@{'/uploads/'+${featuredImg.imagePath}}" alt="">
-                        <input type="file" name="featured" /><br/><br/>
-                        <label>Gallery images</label>
-                       <div  th:each="img : ${galleryImgs}" >
-                           <img  th:src="@{'/uploads/'+${img.imagePath}}" alt="">
-                           <input type="file" th:name="${#strings.arraySplit(img.imagePath,'.')[0]}"/>
-                       </div>
-
+                        <label>Featured image</label><br>
+                        <input type="file" name="featured[]" id="featuredUpload"   th:attr="data-fileuploader-files=${featuredImgJson}"/><br/><br/>
                     </div>
+                        <div class="form-group">
 
-                    <input id="fileupload" type="file" name="files" />
-
+                        <label>Gallery images</label><br>
+                        <div th:utext="${galleryImgJson}"></div>
+                        <input id="galleryUpload" type="file" name="files[]"
+                               th:attr="data-fileuploader-files=${galleryImgJson}"/>
+                    </div>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

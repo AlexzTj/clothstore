@@ -47,7 +47,6 @@
         <property name="converters">
             <set>
                 <bean class="com.ecommerce.model.converter.CategoryIdToCategory" />
-                <bean class="com.ecommerce.model.converter.StringToDate" />
             </set>
         </property>
     </bean>

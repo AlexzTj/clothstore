@@ -10,8 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,6 +21,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Access(AccessType.PROPERTY)
+    @Column(updatable = false, nullable = false)
     private Integer id;
     @NotBlank(message = "please specify product name")
     private String title;
@@ -29,12 +30,12 @@ public class Product {
     private String productCode;
     private String description;
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
+   @Column(updatable = false)
+    private LocalDateTime timestamp;
     @Column(nullable = false)
     @NotNull
     @Digits(message = "must have proper format", integer = 5, fraction = 2)
-    @Min(value = 0,message = "price can not be negative value")
+    @Min(value = 0, message = "price can not be negative value")
     private Double price;
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
@@ -101,11 +102,11 @@ public class Product {
         this.productCode = productCode;
     }
 
-    public Date getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
