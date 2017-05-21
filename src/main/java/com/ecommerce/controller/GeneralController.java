@@ -1,7 +1,7 @@
 package com.ecommerce.controller;
 
-import com.ecommerce.dao.CategoryDao;
 import com.ecommerce.model.Category;
+import com.ecommerce.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,9 +16,9 @@ public class GeneralController {
         return "/uploads/";
     }
     @Autowired
-    protected CategoryDao categoryDao;
+    protected CategoryService categoryService;
     @ModelAttribute("catList")
     public List<Category> getAllCategories() {
-        return categoryDao.getAllCategories();
+        return categoryService.getAllCategories();
     }
 }

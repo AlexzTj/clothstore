@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html layout:decorate="layouts/default">
 <head>
-    <title>Admasdadin page</title>
+    <title>Admin page</title>
 </head>
 <body>
 <div id="content" layout:fragment="content">
@@ -19,6 +19,8 @@
 
             <div class="box" id="text-page">
                 <div th:if="${sucMsg}" th:insert="layouts/fragments :: alert(type= 'success', message = ${sucMsg})" th:remove="tag"></div>
+                <a th:href="@{/admin/addProduct}">Add Product</a> |
+                <a th:href="@{/admin/categories}">View Categories</a><br/><br/>
                 <div class="table-responsive">
                     <table class="table table-striped">
                         <thead>
@@ -48,7 +50,6 @@
                         </tbody>
                     </table>
                 </div>
-                <a th:href="@{/admin/addProduct}">Add Product</a>
             </div>
 
 

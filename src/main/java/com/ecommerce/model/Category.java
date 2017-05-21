@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Set;
@@ -19,7 +20,9 @@ public class Category {
     private Integer id;
     @Column(nullable = false, unique = true)
     @NotBlank(message = "please specify category name")
+    @Size(max = 100)
     private String name;
+    @Size(max = 240)
     private String description;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Product> productSet = Collections.emptySet();

@@ -1,7 +1,6 @@
 package com.ecommerce.service;
 
 
-import com.ecommerce.controller.AdminController;
 import com.ecommerce.model.Image;
 import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonGenerator;

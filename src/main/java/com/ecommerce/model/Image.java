@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Image {
@@ -14,10 +15,12 @@ public class Image {
     private Integer id;
     @ManyToOne
     private Product product;
+    @Size(max = 100)
     private String title;
     @Enumerated(EnumType.STRING)
     private ImageType type;
     @Column(nullable = false)
+    @Size(max = 250)
     private String imagePath;
 
     public Image(String imagePath, ImageType type) {

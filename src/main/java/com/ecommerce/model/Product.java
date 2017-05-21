@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -24,10 +25,13 @@ public class Product {
     @Column(updatable = false, nullable = false)
     private Integer id;
     @NotBlank(message = "please specify product name")
+    @Size(max = 100)
     private String title;
     @Column(nullable = false)
     @NotBlank(message = "please specify product code")
+    @Size(max = 10)
     private String productCode;
+    @Size(max = 250)
     private String description;
     @CreationTimestamp
     @Column(updatable = false)
