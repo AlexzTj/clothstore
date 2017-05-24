@@ -3,8 +3,8 @@ package com.ecommerce.controller;
 import com.ecommerce.model.Image;
 import com.ecommerce.model.ImageType;
 import com.ecommerce.model.Product;
-import com.ecommerce.service.ImageUtils;
 import com.ecommerce.service.ProductService;
+import com.ecommerce.service.util.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-public class AdminController extends GeneralController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AdminController.class);
+public class ProductController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
 
 
     @Autowired

@@ -22,7 +22,7 @@
 
         <div class="col-md-12">
 
-            <div class="row" id="productMain">
+            <div class="row" id="productMain" ng-app="cartApp">
                 <div class="col-sm-6">
                     <div id="mainImage">
                         <img src="" alt="" class="img-responsive">
@@ -34,7 +34,7 @@
                     </div>
                     <!-- /.ribbon -->
 
-                    <div th:if="${T(com.ecommerce.service.ProductUtils).isNew(product)}" class="ribbon new">
+                    <div th:if="${T(com.ecommerce.service.util.ProductUtils).isNew(product)}" class="ribbon new">
                         <div class="theribbon">NEW</div>
                         <div class="ribbon-background"></div>
                     </div>
@@ -48,11 +48,10 @@
                         </p>
                         <p class="price" th:text="|$${product.price}|">$124.00</p>
 
-                        <p class="text-center buttons">
-                            <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to
+                        <p class="text-center buttons" ng-controller="cartCtrl">
+                            <a href="#" class="btn btn-primary" th:with="op='addToCart('+${product.id}+')'"  th:attr="ng-click=${op}" ><i class="fa fa-shopping-cart"></i> Add to
                                 cart</a>
-                            <a href="basket.html" class="btn btn-default"><i class="fa fa-heart"></i> Add to
-                                wishlist</a>
+                            <a th:href="@{/shopping-cart}" class="btn btn-default"><i class="fa fa-heart"></i>View cart</a>
                         </p>
 
 

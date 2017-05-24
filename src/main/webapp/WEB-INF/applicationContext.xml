@@ -1,7 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
 
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
@@ -12,7 +15,7 @@
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
@@ -45,4 +48,53 @@
             </list>
         </property>
     </bean>
+    <bean id="csrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
+        <property name="headerName" value="X-XSRF-TOKEN"/>
+    </bean>
+    <bean id="csrfHeaderFilter" class="com.ecommerce.filter.CsrfHeaderFilter"/>
+
+    <security:http auto-config="true">
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:form-login
+                login-page="/login"
+                default-target-url="/admin"
+                authentication-failure-url="/login?error"
+                username-parameter="username"
+                password-parameter="password"
+                login-processing-url="/perform-login"
+        />
+        <security:logout logout-url="/logout"
+                         delete-cookies="JSESSIONID"
+                         logout-success-url="/"/>
+        <security:custom-filter after="CSRF_FILTER" ref="csrfHeaderFilter"/>
+
+        <security:csrf token-repository-ref="csrfTokenRepository"/>
+        <security:logout logout-success-url="/login?logout"/>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:jdbc-user-service data-source-ref="dataSource"
+                                        authorities-by-username-query="SELECT username,authority FROM authorities WHERE username=?"
+                                        users-by-username-query="SELECT username,password,enabled FROM users WHERE username=?"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <!--RUN SQL IF YOU DONT HAVE SECURITY SCHEMA-->
+    <!--
+    create table users(
+    username varchar_ignorecase(50) not null primary key,
+    password varchar(50) not null,
+    enabled boolean not null
+    );
+  create table authorities (
+  username varchar_ignorecase(50) not null,
+  authority varchar_ignorecase(50) not null,
+  constraint fk_authorities_users foreign key(username) references users(username)
+  );
+  create unique index ix_auth_username on authorities (username,authority);
+
+  insert into users values('admin','admin',1);
+  insert into authorities values('admin','ROLE_ADMIN');
+  -->
 </beans>

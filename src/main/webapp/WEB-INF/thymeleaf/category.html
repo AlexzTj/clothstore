@@ -24,7 +24,7 @@
             <div class="box info-bar">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 products-showing">
-                        Showing <strong>12</strong> of <strong>25</strong> products
+                        Showing <strong>[[${#lists.size(productList)}]]</strong> of <strong>[[${productCount}]]</strong> products
                     </div>
 
                     <!--<div class="col-sm-12 col-md-8  products-number-sort">-->
@@ -52,7 +52,7 @@
             </div>
 
             <div class="row products">
-                <div class="col-md-3 col-sm-4" th:each="product : ${category.productSet} " th:insert="layouts/fragments :: item"></div>
+                <div class="col-md-3 col-sm-4" th:each="product : ${productList} " th:insert="layouts/fragments :: item"></div>
             </div>
             <!-- /.products -->
 

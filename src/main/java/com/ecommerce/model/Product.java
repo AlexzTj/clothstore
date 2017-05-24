@@ -1,6 +1,9 @@
 package com.ecommerce.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,6 +38,7 @@ public class Product {
     private String description;
     @CreationTimestamp
     @Column(updatable = false)
+    @JsonIgnore
     private LocalDateTime timestamp;
     @Column(nullable = false)
     @NotNull
@@ -44,8 +48,10 @@ public class Product {
     @Column(name = "special")
     private boolean onSpecialOffer;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Category category;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Image> imageMetaSet = Collections.emptyList();
 
     public Product() {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head >
     <meta charset="utf-8"/>
@@ -32,6 +32,8 @@
 
     <link rel="shortcut icon" th:href="@{/resources/favicon.png}"/>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 
 </head>
 
@@ -41,19 +43,16 @@
 _________________________________________________________ -->
 <div id="top" >
     <div class="container">
-        <div class="col-md-6 offer" data-animate="fadeInDown">
-            <a href="#" class="btn btn-success btn-sm" data-animate-hover="shake">Offer of the day</a> <a href="#">Get
-            flat 35% off on orders over $50!</a>
-        </div>
-        <div class="col-md-6" data-animate="fadeInDown">
+
+        <div class="col-md-6-offset-6" data-animate="fadeInDown">
             <ul class="menu">
-                <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
-                </li>
-                <li><a href="register.html">Register</a>
-                </li>
-                <li><a href="contact.html">Contact</a>
-                </li>
-                <li><a href="#">Recently viewed</a>
+                <li sec:authorize="isAnonymous()"><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                <li sec:authorize="isAnonymous()"><a  th:href="@{/login}">Register</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/admin}">Hi, Admin</a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="POST" id="logout-form"  style="display: inline-block">
+                        <input type="submit" class="btn-link" style="color:white" value="Log out"/>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -67,28 +66,23 @@ _________________________________________________________ -->
                     <h4 class="modal-title" id="Login">Customer login</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="customer-orders.html" method="post">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="email-modal" placeholder="email"/>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="password-modal" placeholder="password"/>
-                        </div>
-
-                        <p class="text-center">
-                            <button class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
-                        </p>
-
-                    </form>
-
+                    <div th:replace="layouts/fragments :: loginForm"></div>
                     <p class="text-center text-muted">Not registered yet?</p>
-                    <p class="text-center text-muted"><a href="register.html"><strong>Register now</strong></a>! It is
+                    <p class="text-center text-muted"><a th:href="@{/login}"><strong>Register now</strong></a>! It is
                         easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
 
                 </div>
             </div>
         </div>
     </div>
+    <script th:if="${errMsg}" th:inline="javascript">
+        /*<![CDATA[*/
+        $( document ).ready(function(){
+                $('#login-modal').modal('show');
+        });
+
+        /*]]>*/
+    </script>
 
 </div>
 
@@ -101,7 +95,7 @@ _________________________________________________________ -->
     <div class="container">
         <div class="navbar-header">
 
-            <a class="navbar-brand home" href="../index.html" data-animate-hover="bounce">
+            <a class="navbar-brand home" href="/" data-animate-hover="bounce">
                 <img th:src="@{/resources/img/logo.png}" alt="Obaju logo" class="hidden-xs"/>
                 <img th:src="@{/resources/img/logo-small.png}" alt="Obaju logo" class="visible-xs"/><span class="sr-only">Obaju - go to homepage</span>
             </a>
@@ -114,9 +108,9 @@ _________________________________________________________ -->
                     <span class="sr-only">Toggle search</span>
                     <i class="fa fa-search"></i>
                 </button>
-                <a class="btn btn-default navbar-toggle" href="basket.html">
-                    <i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>
-                </a>
+                <!--<a class="btn btn-default navbar-toggle" th:href="@{/shopping-cart}">-->
+                    <!--<i class="fa fa-shopping-cart"></i> <span class="hidden-xs">3 items in cart</span>-->
+                <!--</a>-->
             </div>
         </div>
         <!--/.navbar-header -->
@@ -124,7 +118,7 @@ _________________________________________________________ -->
         <div class="navbar-collapse collapse" id="navigation">
 
             <ul class="nav navbar-nav navbar-left">
-                <li class="active"><a href="../index.html">Home</a>
+                <li class="active"><a href="/">Home</a>
                 </li>
                 <li class="dropdown yamm-fw">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Men
@@ -265,12 +259,12 @@ _________________________________________________________ -->
                                     <div class="col-sm-3">
                                         <div class="banner">
                                             <a href="#">
-                                                <img src="img/banner.jpg" class="img img-responsive" alt=""/>
+                                                <img th:src="@{/resources/img/banner.jpg}" class="img img-responsive" alt=""/>
                                             </a>
                                         </div>
                                         <div class="banner">
                                             <a href="#">
-                                                <img src="img/banner2.jpg" class="img img-responsive" alt=""/>
+                                                <img th:src="@{/resources/img/banner2.jpg}" class="img img-responsive" alt=""/>
                                             </a>
                                         </div>
                                     </div>
@@ -366,8 +360,8 @@ _________________________________________________________ -->
         <div class="navbar-buttons">
 
             <div class="navbar-collapse collapse right" id="basket-overview">
-                <a href="basket.html" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span
-                        class="hidden-sm">3 items in cart</span></a>
+                <a th:href="@{/shopping-cart}" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span
+                        class="hidden-sm">Shopping cart</span></a>
             </div>
             <!--/.nav-collapse -->
 
@@ -543,7 +537,6 @@ _________________________________________________________ -->
 
 <!-- *** SCRIPTS TO INCLUDE ***
 _________________________________________________________ -->
-<script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
 <script th:src="@{/resources/js/bootstrap.min.js}"></script>
 <script th:src="@{/resources/js/bootstrap-confirmation.min.js}"></script>
 <script th:src="@{/resources/js/waypoints.min.js}"></script>
@@ -553,5 +546,6 @@ _________________________________________________________ -->
 <script th:src="@{/resources/js/front.js}"></script>
 <script th:src="@{/resources/js/file-upload/js/jquery.fileuploader.min.js}"></script>
 <script th:src="@{/resources/js/file-upload/js/custom.js}"></script>
+<script th:src="@{/resources/js/angular/cartApp.js}"></script>
 </body>
 </html>

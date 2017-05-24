@@ -15,7 +15,7 @@
                 <div th:if="${errMsg}" th:insert="layouts/fragments :: alert(type= 'danger', message = ${errMsg})"
                      th:remove="tag"></div>
                 <h3>Edit product</h3>
-                <form action="#" th:action="@{/admin/editProduct}" th:object="${product}" method="post"
+                <form action="#" th:action="@{'/admin/editProduct?'+${_csrf.parameterName}+'='+${_csrf.token}}" th:object="${product}" method="post"
                       enctype="multipart/form-data">
                     <input type="hidden" th:field="*{id}"/>
                     <div class="form-group" th:classappend="${#fields.hasErrors('title')}? has-error">

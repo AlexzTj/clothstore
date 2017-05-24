@@ -28,6 +28,7 @@
                             <th>Title</th>
                             <th>Production code</th>
                             <th>Price($)</th>
+                            <th>Product id</th>
                             <th>Category id</th>
                             <th></th>
                         </tr>
@@ -35,9 +36,10 @@
                         <tbody>
                         <tr th:each="prod : ${prodList}">
                             <!--<td><img th:if="${!prod.imageMetaSet.empty}" th:src="@{${prod.imageMetaSet[0].thumbnail}}" alt=""></td>-->
-                            <td th:text="${prod.title}"></td>
+                            <td ><a th:href="@{'/detail/'+${prod.id}}" th:text="${prod.title}"></a></td>
                             <td th:text="${prod.productCode}"></td>
                             <td th:text="${prod.price}"></td>
+                            <td th:text="${prod.id}"></td>
                             <td th:text="${prod.category.id}"></td>
                             <td>
                                 <form th:action="@{'/admin/deleteProduct/' + ${prod.id}}" method="post" style="display: inline-block">

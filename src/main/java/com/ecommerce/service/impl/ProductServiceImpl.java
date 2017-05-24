@@ -107,8 +107,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> fetchProductsWithFeaturedImage(int size) {
-        return productDao.fetchProductsWithFeaturedImage(size);
+    public List<Product> fetchHotProducts(int size) {
+        return productDao.fetchHotProducts(size);
+    }
+
+    @Override
+    public List<Product> getProductsByCategoryId(Integer categoryId) {
+        return productDao.getProductsByCategoryId(categoryId);
+    }
+
+    @Override
+    public Long countProductsByCategoryId(Integer categoryId) {
+        return productDao.countProductsByCategoryId(categoryId);
     }
 
 }

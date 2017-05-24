@@ -1,9 +1,9 @@
-package com.ecommerce.service;
+package com.ecommerce.service.util;
 
 
 import com.ecommerce.model.Image;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;

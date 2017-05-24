@@ -1,8 +1,10 @@
 package com.ecommerce.controller;
 
 import com.ecommerce.model.Category;
+import com.ecommerce.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +19,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
-public class CategoryController extends GeneralController {
+public class CategoryController {
     private static final Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
 
-
+    @Autowired
+    private CategoryService categoryService;
 
     @RequestMapping(value = "/admin/categories")
     public String viewCategories(){

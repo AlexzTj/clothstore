@@ -21,5 +21,9 @@ public interface ProductService {
 
     List<Product> getAllProducts();
 
-    List<Product> fetchProductsWithFeaturedImage(int size);
+    List<Product> fetchHotProducts(int size);
+
+    List<Product> getProductsByCategoryId(Integer categoryId);
+
+    Long countProductsByCategoryId(Integer categoryId);
 }
