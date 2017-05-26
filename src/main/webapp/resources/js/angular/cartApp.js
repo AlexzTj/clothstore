@@ -11,8 +11,8 @@ cartApp.controller("cartCtrl",function($scope,$http){
         $http.get("/rest/cart").then(function(data){
             $scope.cart=data.data;
             $scope.isCheckoutDisabled = Object.keys(data.data.cartItems).length < 1;
-            console.log($scope.cart)
         });
+
     };
     function genUpdateQtyJsonRequest(){
         var json=[];
@@ -29,7 +29,6 @@ cartApp.controller("cartCtrl",function($scope,$http){
     $scope.updateCart = function(){
 
         if($scope.itemsSize() > 0){
-
             var json = genUpdateQtyJsonRequest();
             var config = {
                 headers : {
@@ -37,16 +36,12 @@ cartApp.controller("cartCtrl",function($scope,$http){
                 }
             };
             $http.put("/rest/cart",JSON.stringify(json),config).then(function(data){
-                $scope.refreshCart();
+               $scope.refreshCart();
             });
-        }else{
-            $scope.refreshCart();
         }
-
     };
 
     $scope.deleteCart = function(){
-        $scope.refreshCart();
         $http.delete("/rest/cart").then($scope.refreshCart());
     };
 

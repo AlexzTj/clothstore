@@ -25,7 +25,8 @@
             <div class="row" id="productMain" ng-app="cartApp">
                 <div class="col-sm-6">
                     <div id="mainImage">
-                        <img src="" alt="" class="img-responsive">
+                        <div th:if="${#lists.isEmpty(product.imageMetaSet)}" class="noimg"></div>
+                        <img th:unless="${#lists.isEmpty(product.imageMetaSet)}"  src="" alt="" class="img-responsive">
                     </div>
 
                     <div th:if="${product.onSpecialOffer}" class="ribbon sale">
@@ -57,7 +58,7 @@
 
                     </div>
 
-                    <div class="row" id="thumbs">
+                    <div class="row" id="thumbs" th:unless="${#lists.isEmpty(product.imageMetaSet)}"  >
                             <div class="col-xs-4"
                                  th:each="img : ${product.imageMetaSet}">
                                 <a th:href="@{${uploadDir}+${img.imagePath}}" class="thumb">

@@ -75,7 +75,7 @@ _________________________________________________________ -->
             </div>
         </div>
 
-        <div class="container" th:if="${!prodList.empty}">
+        <div class="container" th:if="${!prodList.empty}" ng-app="cartApp" ng-controller="cartCtrl">
             <div class="product-slider">
                 <div class="item" th:each="product : ${prodList}" th:insert="layouts/fragments :: item"></div>
             </div>

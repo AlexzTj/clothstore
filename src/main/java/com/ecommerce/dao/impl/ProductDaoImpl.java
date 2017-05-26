@@ -72,7 +72,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public List<Product> getProductsByCategoryId(Integer categoryId) {
-        return sessionFactory.getCurrentSession().createQuery("from Product p left join fetch p.imageMetaSet image where image.type = 'FEATURED' and p.category.id = :id")
+        return sessionFactory.getCurrentSession().createQuery("select distinct p from Product p left join fetch p.imageMetaSet image where p.category.id = :id")
                 .setParameter("id", categoryId)
                 .getResultList();
     }

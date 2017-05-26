@@ -4,6 +4,9 @@ package com.ecommerce.model;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class CartItem {
     private Product product;
     private int quantity;
@@ -37,7 +40,9 @@ public class CartItem {
     }
 
     public double getTotalPrice() {
-        return product.getPrice() * quantity;
+        BigDecimal bd = new BigDecimal(product.getPrice() * quantity);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     @Override

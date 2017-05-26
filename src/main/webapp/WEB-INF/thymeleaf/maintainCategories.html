@@ -36,7 +36,7 @@
                         </thead>
                         <tbody>
                         <tr th:each="cat : ${catList}">
-                            <td th:text="${cat.name}"></td>
+                            <td ><a th:href="@{'/'+${cat.id}}" th:text="${cat.name}"></a></td>
                             <div th:with="normLength=${#strings.length(cat.description) lt 20}" th:remove="tag"
                                >
                                 <td th:if="${normLength}" th:text="${cat.description}"></td>

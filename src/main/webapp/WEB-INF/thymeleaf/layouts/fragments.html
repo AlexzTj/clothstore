@@ -9,22 +9,25 @@
     <div class="flip-container">
         <a class="flipper" th:href="@{'detail/'+${product.id}}">
             <div class="front">
-                <img th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+                <div th:if="${#lists.isEmpty(product.imageMetaSet)}" class="noimg"></div>
+                <img th:unless="${#lists.isEmpty(product.imageMetaSet)}" th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
             </div>
             <div class="back">
-                <img th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+                <div th:if="${#lists.isEmpty(product.imageMetaSet)}" class="noimg"></div>
+                <img th:unless="${#lists.isEmpty(product.imageMetaSet)}" th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
             </div>
         </a>
     </div>
     <a th:href="@{'detail/'+${product.id}}" class="invisible">
-        <img th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+        <div th:if="${#lists.isEmpty(product.imageMetaSet)}" class="noimg"></div>
+        <img th:unless="${#lists.isEmpty(product.imageMetaSet)}" th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
     </a>
     <div class="text">
         <h3 th:text="${product.title}">Fur coat with very but very very long name</h3>
         <p class="price" th:text="|$${product.price}|">$143.00</p>
         <p class="buttons">
             <a th:href="@{'detail/'+${product.id}}" class="btn btn-default">View detail</a>
-            <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+            <a href="#" class="btn btn-primary" th:with="op='addToCart('+${product.id}+')'"  th:attr="ng-click=${op}"><i class="fa fa-shopping-cart"></i>Add to cart</a>
         </p>
     </div>
     <!-- /.text -->

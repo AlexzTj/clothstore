@@ -1672,3 +1672,12 @@ address {
   color: #fff;
   text-decoration: none;
 }
+
+.noimg{height: 400px;
+  background: url(../img/noimg.jpg) center center no-repeat;
+  background-size: 300px 190px;
+  background-color: #f1f5f8;}
+
+.products .invisible img,.products .noimg,.flipper .front,.flipper .back
+{height: 200px;
+  overflow: hidden;}

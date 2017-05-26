@@ -3,6 +3,9 @@ package com.ecommerce.model;
 
 import com.ecommerce.model.dto.ProductDTO;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +14,6 @@ public class Cart {
     private String cartId;
     private Map<Integer, CartItem> cartItems = new HashMap<>();
     private double grandTotal;
-
     public Cart() {
     }
 
@@ -34,8 +36,11 @@ public class Cart {
 
     public double getGrandTotal() {
         updateGrandTotal();
-        return grandTotal;
+        BigDecimal bd = new BigDecimal(grandTotal);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
+
 
     public void addCartItem(CartItem item) {
         Integer productId = item.getProduct().getId();
