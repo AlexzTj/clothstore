@@ -1,14 +1,28 @@
 package com.ecommerce.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+@Entity
 public class CartItem {
+    @Id
+    @GeneratedValue
+    private Integer id;
+    @ManyToOne
+    @JsonIgnore
+    private Order orderId;
+    @Transient
     private Product product;
+    @JsonIgnore
+    private String title;
+    @JsonIgnore
+    private Integer productId;
     private int quantity;
     private double totalPrice;
 
@@ -18,6 +32,8 @@ public class CartItem {
     public CartItem(Product product) {
         if (product == null) throw new IllegalArgumentException("product can not be null");
         this.product = product;
+        this.title = product.getTitle();
+        this.productId = product.getId();
         quantity = 1;
     }
 
@@ -28,6 +44,8 @@ public class CartItem {
     public void setProduct(Product product) {
         if (product == null) throw new IllegalArgumentException("product can not be null");
         this.product = product;
+        this.title = product.getTitle();
+        this.productId = product.getId();
     }
 
     public int getQuantity() {
@@ -58,6 +76,22 @@ public class CartItem {
     public int hashCode() {
         return new HashCodeBuilder().append(product)
                 .hashCode();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

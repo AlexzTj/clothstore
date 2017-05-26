@@ -55,6 +55,7 @@
 
     <security:http auto-config="true">
         <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/checkout/**" access="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"/>
         <security:form-login
                 login-page="/login"
                 default-target-url="/admin"
@@ -75,18 +76,14 @@
     <security:authentication-manager>
         <security:authentication-provider>
             <security:jdbc-user-service data-source-ref="dataSource"
-                                        authorities-by-username-query="SELECT username,authority FROM authorities WHERE username=?"
+                                        authorities-by-username-query="SELECT username,role FROM user_roles WHERE username=?"
                                         users-by-username-query="SELECT username,password,enabled FROM users WHERE username=?"/>
         </security:authentication-provider>
     </security:authentication-manager>
 
     <!--RUN SQL IF YOU DONT HAVE SECURITY SCHEMA-->
     <!--
-    create table users(
-    username varchar_ignorecase(50) not null primary key,
-    password varchar(50) not null,
-    enabled boolean not null
-    );
+
   create table authorities (
   username varchar_ignorecase(50) not null,
   authority varchar_ignorecase(50) not null,

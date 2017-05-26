@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/default">
+<head>
+    <title>Checkout</title>
+</head>
+<body>
+<div id="content" layout:fragment="content">
+    <div class="container">
+
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a>
+                </li>
+                <li>Checkout - Address</li>
+            </ul>
+        </div>
+
+        <div class="col-md-12" id="checkout">
+
+            <div class="box">
+                <form method="post" action="#" th:object="${order}">
+                    <input type="hidden" th:field="*{id}"/>
+                    <h1>Checkout</h1>
+                    <ul class="nav  nav-tabs nav-justified" role="tablist">
+                        <li role="presentation" class="active"><a href="#address" aria-controls="address" role="tab" data-toggle="tab">
+                            <i class="fa fa-map-marker"></i><br>Address</a>
+                        </li>
+                        <li role="presentation" ><a href="#delivery" aria-controls="delivery" role="tab" data-toggle="tab">
+                            <i class="fa fa-truck"></i><br>Delivery Method</a>
+                        </li>
+                        <li role="presentation" ><a href="#payment" aria-controls="payment" role="tab" data-toggle="tab">
+                            <i class="fa fa-money"></i><br>Payment Method</a>
+                        </li>
+                        <li role="presentation"><a href="#review" aria-controls="review" role="tab" data-toggle="tab">
+                            <i class="fa fa-eye"></i><br>Order Review</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                    <div role="tabpanel" class="content tab-pane active" id="address">
+                        <div class="row">
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label  th:for="${#ids.next('user.firstName')}" th:text="Firstname">Firstname</label>
+                                    <input type="text" th:field="*{user.firstName}"  class="form-control" placeholder="Firstname" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label  th:for="${#ids.next('user.lastName')}" th:text="Lastname">Lastname</label>
+                                    <input type="text" th:field="*{user.lastName}"  class="form-control" placeholder="Lastname" />
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+
+
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group">
+                                    <label  th:for="${#ids.next('user.address.streetName')}" th:text="Street">Street</label>
+                                    <input type="text" th:field="*{user.address.streetName}"  class="form-control" placeholder="Street" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group">
+                                    <label  th:for="${#ids.next('user.address.zipCode')}" th:text="ZIP">ZIP</label>
+                                    <input type="text" th:field="*{user.address.zipCode}"  class="form-control" placeholder="ZIP" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group">
+                                    <label  th:for="${#ids.next('user.address.state')}" th:text="State">State</label>
+                                    <input type="text" th:field="*{user.address.state}"  class="form-control" placeholder="State" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group">
+                                    <label  th:for="${#ids.next('user.address.country')}" th:text="Country">Country</label>
+                                    <input type="text" th:field="*{user.address.country}"  class="form-control" placeholder="Country" />
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label  th:for="${#ids.next('user.telephone')}" th:text="Telephone">Telephone</label>
+                                    <input type="text" th:field="*{user.telephone}"  class="form-control" placeholder="Telephone" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label  th:for="${#ids.next('user.email')}" th:text="Email">email</label>
+                                    <input type="text" th:field="*{user.email}"  class="form-control" placeholder="Email" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- /.row -->
+                        <div class="box-footer">
+                            <div class="pull-left">
+                                <a th:href="@{/shopping-cart}" class="btn btn-default"><i class="fa fa-chevron-left"></i>Back to basket</a>
+                            </div>
+                            <div class="pull-right">
+                                <a href="#delivery"  class="btn btn-primary clickTab">Continue to Delivery Method<i class="fa fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" id="delivery" class="content tab-pane">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="box shipping-method">
+
+                                        <h4>USPS Next Day</h4>
+
+                                        <p>Get it right on next day - fastest option possible.</p>
+
+                                        <div class="box-footer text-center">
+
+                                            <input type="radio" th:field="*{delivery}"  value="USPS" checked="checked" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="box shipping-method">
+
+                                        <h4>FEDEX Next Day</h4>
+
+                                        <p>Get it right on next day - fastest option possible.</p>
+
+                                        <div class="box-footer text-center">
+
+                                            <input type="radio" th:field="*{delivery}" value="FEDEX"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- /.row -->
+                            <div class="box-footer">
+                                <div class="pull-left">
+                                    <a href="#address" class="btn btn-default clickTab"><i class="fa fa-chevron-left"></i>Back to Addresses</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#payment"  class="btn btn-primary clickTab">Continue to Payment Method<i class="fa fa-chevron-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <div role="tabpanel" id="payment" class="content tab-pane">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="box payment-method">
+
+                                        <h4>Paypal</h4>
+
+                                        <p>We like it all.</p>
+
+                                        <div class="box-footer text-center">
+
+                                            <input type="radio" th:field="*{payment}" value="Paypal" checked="checked" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="box payment-method">
+
+                                        <h4>Payment gateway</h4>
+
+                                        <p>VISA and Mastercard only.</p>
+
+                                        <div class="box-footer text-center">
+
+                                            <input type="radio" th:field="*{payment}" value="VISA">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="box payment-method">
+
+                                        <h4>Cash on delivery</h4>
+
+                                        <p>You pay when you get it.</p>
+
+                                        <div class="box-footer text-center">
+
+                                            <input type="radio" th:field="*{payment}" value="CASH">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+                            <div class="box-footer">
+                                <div class="pull-left">
+                                    <a href="#delivery" class="btn btn-default clickTab"><i class="fa fa-chevron-left"></i>Back to Shipping method</a>
+                                </div>
+                                <div class="pull-right">
+                                    <a href="#review"  class="btn btn-primary clickTab">Continue to Order review<i class="fa fa-chevron-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <div role="tabpanel" id="review" class="content tab-pane">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th >Product</th>
+                                        <th>Quantity</th>
+                                        <th>Unit price</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="item : ${order.cartItems}">
+                                        <td><a th:href="@{'/detail'+item.product.id}">White Blouse Armani</a>
+                                        </td>
+                                        <td th:text="${item.quantity}"></td>
+                                        <td th:text="${item.product.price}">$123.00</td>
+                                        <td th:text="${item.totalPrice}">$246.00</td>
+                                    </tr>
+
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th colspan="5">Total</th>
+                                        <th th:text="${order.cart.grandTotal}">$446.00</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+
+                            </div>
+                            <!-- /.table-responsive -->
+                            <div class="box-footer">
+                                <div class="pull-left">
+                                    <a href="#payment" class="btn btn-default clickTab"><i class="fa fa-chevron-left"></i>Back to Payment method</a>
+                                </div>
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-primary">Place an order<i class="fa fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+
+
+        </div>
+
+
+
+    </div>
+    <!-- /.container -->
+</div>
+</body>
+</html>

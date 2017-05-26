@@ -7,6 +7,8 @@
     <div id="content" layout:fragment="content">
 
     <div class="container">
+        <div th:if="${emptyCart}" th:insert="layouts/fragments :: alert(type= 'warning', message = ${emptyCart})" th:remove="tag"></div>
+
         <div class="col-md-12">
             <div id="main-slider">
                 <div class="item">

@@ -10,9 +10,17 @@ $(function() {
         rootSelector: '[data-toggle=confirmation]'
     });
 
+    $( ".clickTab" ).click(function(e) {
+    	e.preventDefault();
+        showNext($( this ));
+    });
+
 
 });
-
+function showNext(obj){
+    var id =obj.attr("href");
+    $('.nav-tabs a[href="' + id + '"]').tab('show');
+}
 $(".alert").fadeTo(1000, 500).fadeOut(4000, function(){
     $(this).alert('close');
 });
@@ -215,7 +223,6 @@ $.fn.alignElementsSameHeight = function() {
 	children.innerHeight(maxHeight);
 
     });
-
 
 
 }
