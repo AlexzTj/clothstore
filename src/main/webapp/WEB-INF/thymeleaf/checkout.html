@@ -18,7 +18,7 @@
         <div class="col-md-12" id="checkout">
 
             <div class="box">
-                <form method="post" action="#" th:object="${order}">
+                <form method="post" th:action="@{/checkout}" th:object="${order}">
                     <input type="hidden" th:field="*{id}"/>
                     <h1>Checkout</h1>
                     <ul class="nav  nav-tabs nav-justified" role="tablist">

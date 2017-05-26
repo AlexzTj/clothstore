@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,6 +19,7 @@ public class User {
     private String telephone;
     private String email;
     private Set<UserRole> userRole = new HashSet<UserRole>(0);
+    private List<Order> orderList;
 
     public User() {
     }
@@ -90,7 +92,8 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL)
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     public Address getAddress() {
         return address;
     }
@@ -113,5 +116,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
     }
 }

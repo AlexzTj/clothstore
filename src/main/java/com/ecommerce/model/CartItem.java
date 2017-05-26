@@ -16,7 +16,7 @@ public class CartItem {
     private Integer id;
     @ManyToOne
     @JsonIgnore
-    private Order orderId;
+    private Order order;
     @Transient
     private Product product;
     @JsonIgnore
