@@ -6,6 +6,7 @@ import com.ecommerce.model.Order;
 import com.ecommerce.model.User;
 import com.ecommerce.service.OrderService;
 import com.ecommerce.service.UserService;
+import com.ecommerce.service.util.CartUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,6 +66,7 @@ public class CheckoutController {
             return "checkout";
         }
         orderService.addOrder(order);
+        CartUtils.deleteCart(request);
         redirectAttributes.addFlashAttribute("sucMsg",
                 "You successfully submitted order ");
         return "redirect:/";

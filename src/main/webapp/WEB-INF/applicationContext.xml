@@ -19,7 +19,7 @@
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
                 <prop key="show_sql">true</prop>
                 <prop key="format_sql">true</prop>
             </props>
@@ -68,7 +68,7 @@
                          delete-cookies="JSESSIONID"
                          logout-success-url="/"/>
         <security:custom-filter after="CSRF_FILTER" ref="csrfHeaderFilter"/>
-
+        <security:access-denied-handler error-page="/403"/>
         <security:csrf token-repository-ref="csrfTokenRepository"/>
         <security:logout logout-success-url="/login?logout"/>
     </security:http>
@@ -81,17 +81,4 @@
         </security:authentication-provider>
     </security:authentication-manager>
 
-    <!--RUN SQL IF YOU DONT HAVE SECURITY SCHEMA-->
-    <!--
-
-  create table authorities (
-  username varchar_ignorecase(50) not null,
-  authority varchar_ignorecase(50) not null,
-  constraint fk_authorities_users foreign key(username) references users(username)
-  );
-  create unique index ix_auth_username on authorities (username,authority);
-
-  insert into users values('admin','admin',1);
-  insert into authorities values('admin','ROLE_ADMIN');
-  -->
 </beans>

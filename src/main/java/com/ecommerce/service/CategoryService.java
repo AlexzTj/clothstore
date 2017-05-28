@@ -15,4 +15,6 @@ public interface CategoryService {
     void updateCategory(Category category);
 
     void deleteCategory(Integer id);
+
+    Category getCategoryBySlug(String categorySlug);
 }

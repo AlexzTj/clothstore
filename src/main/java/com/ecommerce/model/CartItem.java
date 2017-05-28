@@ -21,6 +21,7 @@ public class CartItem {
     private Product product;
     @JsonIgnore
     private String title;
+
     @JsonIgnore
     private Integer productId;
     private int quantity;

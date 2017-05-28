@@ -4,8 +4,11 @@ package com.ecommerce.model;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 import java.util.Objects;
@@ -19,8 +22,12 @@ public class Category {
     @Column(updatable = false, nullable = false)
     private Integer id;
     @Column(nullable = false, unique = true)
-    @NotBlank(message = "please specify category name")
+    @Size(max = 40)
+    @Pattern(regexp = "^[a-z0-9-]+$", message = "must be valid pattern /^[a-z0-9-]+$/")
+    @NotEmpty(message = "please specify category slug")
+    private String slug;
     @Size(max = 100)
+    @NotEmpty(message = "please specify category name")
     private String name;
     @Size(max = 240)
     private String description;
@@ -60,6 +67,14 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public void addProduct(Product product) {

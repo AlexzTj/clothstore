@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
@@ -33,7 +30,8 @@ class GlobalController {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    public String handle() {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handle(NoHandlerFoundException ex) {
         return "404";
     }
 
@@ -47,14 +45,15 @@ class GlobalController {
         LOGGER.error("\nUnable to bind post data sent to: " + request.getRequestURI() + "\nCaught Exception:\n" + exception.getMessage());
     }
 
-    @ExceptionHandler({RuntimeException.class,Exception.class})
-    @ResponseStatus(value= HttpStatus.INTERNAL_SERVER_ERROR,reason = "internal server error")
-    public ModelAndView defaultErrorHandler(HttpServletRequest request, Exception e){
-        LOGGER.error("Application error ",e);
+    @ExceptionHandler(Exception.class)
+    public ModelAndView handleError(HttpServletRequest req, Exception ex) {
+        LOGGER.error("Request: " + req.getRequestURL() + " raised ", ex);
+
         ModelAndView mav = new ModelAndView();
-        mav.addObject("reason", request.getAttribute("javax.servlet.error.message"));
-        mav.addObject("status", request.getAttribute("javax.servlet.error.status_code"));
         mav.setViewName("error");
         return mav;
     }
+
 }
+
+

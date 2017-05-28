@@ -40,4 +40,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void deleteCategory(Integer id) {
         categoryDao.deleteCategory(id);
     }
+
+    @Override
+    public Category getCategoryBySlug(String categorySlug) {
+        return categoryDao.getCategoryBySlug(categorySlug);
+    }
 }

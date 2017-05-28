@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/default">
+<head>
+    <title>Admin page</title>
+</head>
+<body>
+<div id="content" layout:fragment="content">
+    <div class="container">
+        <div class="col-md-12">
+            <div class="box">
+                <h1>Order #[[${order.id}]]</h1>
+
+                <hr>
+                <form th:action="@{/admin/updateOrder}" th:object="${order}"  method="POST">
+                    <input type="hidden" th:field="${order.id}" />
+                    <div class="form-group">
+                        <label>Order status</label>
+                        <select th:field="*{status}" class="form-control">
+                            <option th:each="stat : ${T(com.ecommerce.model.constants.OrderStatus).values()}"
+                                    th:value="${stat}"
+                                    th:selected="${stat} eq *{status}"
+                                    th:text="${stat}">Status
+                            </option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a class="btn btn-default" th:href="@{/admin/orders}" role="button">Cancel</a>
+                </form>
+                <hr>
+                <div class="table-responsive">
+                    <h3>Order items</h3>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="item : ${order.cartItems}">
+                            <td th:text="${item.productId}"></td>
+                            <td><a href="#" th:text="${item.title}"></a></td>
+                            <td th:text="${item.quantity}">2</td>
+                            <td th:text="${item.totalPrice}">$123.00</td>
+                        </tr>
+
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><strong>Total: </strong></td>
+                            <td th:text="|$${order.totalPrice}|"></td>
+                        </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+                <!-- /.table-responsive -->
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Client Name</th>
+                                <th>Client address</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>[[${order.user.firstName}]] [[${order.user.lastName}]]</td>
+                                <td th:if="${order.user.address}">[[${order.user.address.getPrettyAddress()}]]</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                </div>
+            </div>
+
+        </div>
+        <!-- /.container -->
+    </div>
+</body>
+</html>

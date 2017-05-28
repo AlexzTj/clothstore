@@ -72,4 +72,14 @@ public class Address {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public String getPrettyAddress() {
+        return  "{" +
+                "street='" + streetName + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                '}';
+    }
 }

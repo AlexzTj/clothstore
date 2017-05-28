@@ -1681,3 +1681,8 @@ address {
 .products .invisible img,.products .noimg,.flipper .front,.flipper .back
 {height: 200px;
   overflow: hidden;}
+
+.label-done{    background-color: #5cb85c;}
+.label-pending{     background-color: #f0ad4e;}
+.label-cancelled{    background-color: #d9534f;}
+.label-inprogress{background-color: #5bc0de;}
