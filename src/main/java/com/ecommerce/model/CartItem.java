@@ -35,6 +35,7 @@ public class CartItem {
         this.title = product.getTitle();
         this.productId = product.getId();
         quantity = 1;
+        updateTotalPrice();
     }
 
     public Product getProduct() {
@@ -46,6 +47,12 @@ public class CartItem {
         this.product = product;
         this.title = product.getTitle();
         this.productId = product.getId();
+        updateTotalPrice();
+    }
+    public void updateTotalPrice(){
+        BigDecimal bd = new BigDecimal(product.getPrice() * quantity);
+        bd = bd.setScale(2, RoundingMode.HALF_UP);
+        this.totalPrice = bd.doubleValue();
     }
 
     public int getQuantity() {
@@ -55,12 +62,11 @@ public class CartItem {
     public void setQuantity(int quantity) {
         if (quantity < 1) throw new IllegalArgumentException("cartitem quantity can not be less than 1");
         this.quantity = quantity;
+        updateTotalPrice();
     }
 
     public double getTotalPrice() {
-        BigDecimal bd = new BigDecimal(product.getPrice() * quantity);
-        bd = bd.setScale(2, RoundingMode.HALF_UP);
-        return bd.doubleValue();
+      return totalPrice;
     }
 
     @Override
@@ -92,6 +98,22 @@ public class CartItem {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     @Override

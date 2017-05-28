@@ -156,7 +156,7 @@
 
                                         <div class="box-footer text-center">
 
-                                            <input type="radio" th:field="*{payment}" value="Paypal" checked="checked" />
+                                            <input type="radio" th:field="*{payment}" value="PAYPAL" />
                                         </div>
                                     </div>
                                 </div>
@@ -212,7 +212,7 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="item : ${order.cartItems}">
-                                        <td><a th:href="@{'/detail'+item.product.id}">White Blouse Armani</a>
+                                        <td><a th:href="@{'/detail'+item.product.id}" th:text="${item.title}">White Blouse Armani</a>
                                         </td>
                                         <td th:text="${item.quantity}"></td>
                                         <td th:text="${item.product.price}">$123.00</td>
@@ -223,7 +223,7 @@
                                     <tfoot>
                                     <tr>
                                         <th colspan="5">Total</th>
-                                        <th th:text="${order.cart.grandTotal}">$446.00</th>
+                                        <th th:text="|$${order.totalPrice}|">$446.00</th>
                                     </tr>
                                     </tfoot>
                                 </table>

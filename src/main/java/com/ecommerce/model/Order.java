@@ -1,5 +1,8 @@
 package com.ecommerce.model;
 
+import com.ecommerce.model.constants.DeliveryMethod;
+import com.ecommerce.model.constants.OrderStatus;
+import com.ecommerce.model.constants.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -8,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -22,21 +26,23 @@ public class Order implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @NotNull
     private User user;
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @NotEmpty
     private List<CartItem> cartItems;
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
     @Enumerated(EnumType.STRING)
+    @NotNull
     private DeliveryMethod delivery = DeliveryMethod.FEDEX;
-    private String payment;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private PaymentMethod payment = PaymentMethod.VISA;
     @CreationTimestamp
     @Column(updatable = false)
     @JsonIgnore
     private LocalDateTime createdOn;
-    @Transient
-    @JsonIgnore
-    private Cart cart;
+    @Min(value = 0, message = "total price can not be less than 0")
+    private double totalPrice;
 
     public Integer getId() {
         return id;
@@ -59,6 +65,7 @@ public class Order implements Serializable {
     }
 
     public void setCartItems(List<CartItem> cartItems) {
+        cartItems.forEach(e -> e.setOrder(this));
         this.cartItems = cartItems;
     }
 
@@ -78,11 +85,11 @@ public class Order implements Serializable {
         this.delivery = delivery;
     }
 
-    public String getPayment() {
+    public PaymentMethod getPayment() {
         return payment;
     }
 
-    public void setPayment(String payment) {
+    public void setPayment(PaymentMethod payment) {
         this.payment = payment;
     }
 
@@ -94,12 +101,12 @@ public class Order implements Serializable {
         this.createdOn = createdOn;
     }
 
-    public Cart getCart() {
-        return cart;
+    public double getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     @Override
@@ -109,12 +116,12 @@ public class Order implements Serializable {
 
         Order order = (Order) o;
         return new EqualsBuilder()
-                .append(getCreatedOn(),order.getCreatedOn())
-                .append(getUser(),order.getUser())
-                .append(getCartItems(),order.getCartItems())
-                .append(getDelivery(),order.getDelivery())
-                .append(getStatus(),order.getStatus())
-                .append(getPayment(),order.getPayment())
+                .append(getCreatedOn(), order.getCreatedOn())
+                .append(getUser(), order.getUser())
+                .append(getCartItems(), order.getCartItems())
+                .append(getDelivery(), order.getDelivery())
+                .append(getStatus(), order.getStatus())
+                .append(getPayment(), order.getPayment())
                 .isEquals();
     }
 

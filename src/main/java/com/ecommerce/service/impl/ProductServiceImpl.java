@@ -3,7 +3,7 @@ package com.ecommerce.service.impl;
 
 import com.ecommerce.dao.ProductDao;
 import com.ecommerce.model.Image;
-import com.ecommerce.model.ImageType;
+import com.ecommerce.model.constants.ImageType;
 import com.ecommerce.model.Product;
 import com.ecommerce.service.ProductService;
 import com.ecommerce.service.StorageService;

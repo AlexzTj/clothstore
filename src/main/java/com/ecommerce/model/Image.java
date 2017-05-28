@@ -1,5 +1,6 @@
 package com.ecommerce.model;
 
+import com.ecommerce.model.constants.ImageType;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;

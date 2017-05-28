@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.security.Principal;
@@ -40,24 +39,27 @@ public class CheckoutController {
 
         User user = userService.getUserById(name);
         if (user == null) throw new IllegalArgumentException();
-        if (user == null) throw new IllegalArgumentException();
         Order order = new Order();
-        order.setUser(user);
-        order.setCart(cart);
+
         order.setCartItems(new ArrayList<>(cart.getCartItems().values()));
+        order.setTotalPrice(cart.getGrandTotal());
         model.addAttribute("order", order);
         return "checkout";
     }
 
     @RequestMapping(value = "/checkout", method = RequestMethod.POST)
-    public String createOrder(@ModelAttribute("order") Order order, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+    public String createOrder(@ModelAttribute("order") Order order, HttpServletRequest request, RedirectAttributes redirectAttributes,Principal principal) {
         Cart cart = (Cart) request.getSession(true).getAttribute("cart");
         if (cart == null || cart.getCartItems().isEmpty()) {
             redirectAttributes.addFlashAttribute("emptyCart", "Please add products to your cart");
             return "redirect:/";
         }
         order.setCartItems(new ArrayList<>(cart.getCartItems().values()));
-        order.setCart(null);
+        order.setTotalPrice(cart.getGrandTotal());
+
+        String name = principal.getName();
+        User user = userService.getUserById(name);
+        order.setUser(user);
         Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
         if(!validator.validate(order).isEmpty()){
             return "checkout";
