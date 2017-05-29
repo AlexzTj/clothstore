@@ -20,7 +20,11 @@ $(document).ready(function () {
             '</li>',
         },
         onRemove: function (item, listEl, parentEl, newInputEl, inputEl) {
-            removeImage(item);
+            var result =  removeImage(item);
+            $.when( result ).done(function(){
+                return typeof result === "undefined" ? false : result;
+            });
+
         }
     });
     $('#galleryUpload').fileuploader({
@@ -80,21 +84,29 @@ $(document).ready(function () {
             });
         },
         onRemove: function (item, listEl, parentEl, newInputEl, inputEl) {
-            removeImage(item);
+            var result =  removeImage(item);
+            return typeof result === "undefined" ? false : result;
         }
 
     });
 
     function removeImage(item) {
         if (item.choosed) return true;
-        $.post("/admin/deleteImage/" + item.name)
-            .done(function () {
+
+        $.ajax({
+            url: "/admin/deleteImage/" + item.name,
+            headers: {
+                [_csrf_header] : _csrf_token
+            },
+            method: 'POST',
+            success: function(data){
                 return true;
-            })
-            .fail(function (xhr, textStatus, errorThrown) {
-                alert(xhr.responseText);
+            },
+            error:function (data) {
                 return false;
-            });
+            }
+        });
+
     }
 
 });
