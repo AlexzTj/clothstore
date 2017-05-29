@@ -247,6 +247,12 @@ _________________________________________________________ -->
 
 <!-- *** SCRIPTS TO INCLUDE ***
 _________________________________________________________ -->
+<script  th:inline="javascript">
+    /*<![CDATA[*/
+    var _csrf_header=[[${_csrf.headerName}]];
+    var _csrf_token=[[${_csrf.token}]];
+    /*]]>*/
+</script>
 <script th:src="@{/resources/js/bootstrap.min.js}"></script>
 <script th:src="@{/resources/js/bootstrap-confirmation.min.js}"></script>
 <script th:src="@{/resources/js/waypoints.min.js}"></script>
