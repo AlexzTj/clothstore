@@ -1,0 +1,84 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="${db.url};DB_CLOSE_ON_EXIT=TRUE"/>
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.pass}"/>
+    </bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+                <prop key="show_sql">true</prop>
+                <prop key="format_sql">true</prop>
+            </props>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>com.ecommerce</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- setting maximum upload size -->
+        <property name="maxUploadSize" value="#{10*3*1024*1024}"/>
+    </bean>
+
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+            <list>
+                <value>message</value>
+            </list>
+        </property>
+    </bean>
+    <bean id="csrfTokenRepository" class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository">
+        <property name="headerName" value="X-XSRF-TOKEN"/>
+    </bean>
+    <bean id="csrfHeaderFilter" class="com.ecommerce.filter.CsrfHeaderFilter"/>
+
+    <security:http auto-config="true">
+        <security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')"/>
+        <security:intercept-url pattern="/checkout/**" access="hasAnyAuthority('ROLE_ADMIN','ROLE_USER')"/>
+        <security:form-login
+                login-page="/login"
+                default-target-url="/admin"
+                authentication-failure-url="/login?error"
+                username-parameter="username"
+                password-parameter="password"
+                login-processing-url="/perform-login"
+        />
+        <security:logout logout-url="/logout"
+                         delete-cookies="JSESSIONID"
+                         logout-success-url="/"/>
+        <security:custom-filter after="CSRF_FILTER" ref="csrfHeaderFilter"/>
+        <security:access-denied-handler error-page="/403"/>
+        <security:csrf token-repository-ref="csrfTokenRepository"/>
+        <security:logout logout-success-url="/login?logout"/>
+    </security:http>
+
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <security:jdbc-user-service data-source-ref="dataSource"
+                                        authorities-by-username-query="SELECT username,role FROM user_roles WHERE username=?"
+                                        users-by-username-query="SELECT username,password,enabled FROM users WHERE username=?"/>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+</beans>

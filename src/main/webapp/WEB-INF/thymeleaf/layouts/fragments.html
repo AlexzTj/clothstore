@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="product" th:fragment="item">
+    <div class="flip-container">
+        <a class="flipper" th:href="@{'detail/'+${product.id}}">
+            <div class="front">
+                <div th:if="${#lists.isEmpty(product.imageMetaSet)}" class="noimg"></div>
+                <img th:unless="${#lists.isEmpty(product.imageMetaSet)}" th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+            </div>
+            <div class="back">
+                <div th:if="${#lists.isEmpty(product.imageMetaSet)}" class="noimg"></div>
+                <img th:unless="${#lists.isEmpty(product.imageMetaSet)}" th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+            </div>
+        </a>
+    </div>
+    <a th:href="@{'detail/'+${product.id}}" class="invisible">
+        <div th:if="${#lists.isEmpty(product.imageMetaSet)}" class="noimg"></div>
+        <img th:unless="${#lists.isEmpty(product.imageMetaSet)}" th:src="@{${uploadDir}+${product.imageMetaSet[0].imagePath}}" alt="" class="img-responsive">
+    </a>
+    <div class="text">
+        <h3 th:text="${product.title}">Fur coat with very but very very long name</h3>
+        <p class="price" th:text="|$${product.price}|">$143.00</p>
+        <p class="buttons">
+            <a th:href="@{'detail/'+${product.id}}" class="btn btn-default">View detail</a>
+            <a href="#" class="btn btn-primary" th:with="op='addToCart('+${product.id}+')'"  th:attr="ng-click=${op}"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+        </p>
+    </div>
+    <!-- /.text -->
+
+    <div th:if="${product.onSpecialOffer}" class="ribbon sale">
+        <div class="theribbon">SALE</div>
+        <div class="ribbon-background"></div>
+    </div>
+    <!-- /.ribbon -->
+
+    <div th:if="${T(com.ecommerce.service.util.ProductUtils).isNew(product)}" class="ribbon new">
+        <div class="theribbon">NEW</div>
+        <div class="ribbon-background"></div>
+    </div>
+    <!-- /.ribbon -->
+
+</div>
+
+
+<div class="alert alert-dissmisable" role="alert" th:fragment="alert (type,message)"
+     th:classappend="'alert-' + ${type}">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span>
+    </button>
+    <string th:text="${message}"></string>
+</div>
+
+
+<form th:action="@{/perform-login}" method="post" th:fragment="loginForm">
+    <div th:if="${errMsg}" th:text="${errMsg}" class="text-danger">Invalid username or password.</div>
+    <div th:if="${sucMsg}" th:text="${sucMsg}" class="text-success">You have been successfully logout</div>
+    <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" class="form-control" name="username" id="username">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" name="password">
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
+    </div>
+
+</form>
+
+</body>
+</html>

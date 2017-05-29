@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/default">
+<head>
+    <title>Category page</title>
+</head>
+<body>
+<div id="content" layout:fragment="content">
+    <div class="container">
+
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a>
+                </li>
+                <li>Text page</li>
+            </ul>
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="box" id="text-page">
+                <a th:href="@{/admin}">Back</a> |
+                <a th:href="@{/admin/addCategory}">Add Category</a><br><br>
+                <div th:if="${sucMsg}" th:insert="layouts/fragments :: alert(type= 'success', message = ${sucMsg})"
+                     th:remove="tag"></div>
+
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Id</th>
+                            <th>Pretty uri</th>
+                            <th>Parent Id</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cat : ${catList}">
+                            <td ><a th:href="@{${#strings.equals(cat.slug,'products')} ? '/'+${cat.slug} : '/products/'+${cat.slug}}" th:text="${cat.name}"></a></td>
+                            <div th:with="normLength=${cat.description} ? ${#strings.length(cat.description) lt 20} : true" th:remove="tag"
+                               >
+                                <td th:if="${normLength}" th:text="${cat.description}"></td>
+                                <td th:unless="${normLength}" th:text="${#strings.substring(cat.description,0,19)}+'...'"></td>
+                            </div>
+                            <td th:text="${cat.id}"></td>
+                            <td th:text="${cat.slug}"></td>
+                            <td></td>
+                            <td>
+                                <form th:action="@{'/admin/deleteCategory/' + ${cat.id}}" method="post"
+                                      style="display: inline-block">
+                                    <button type="submit" data-toggle="confirmation" data-title="Remove this product?"
+                                            data-popout="true" data-singleton="true"
+                                            class="btn btn-danger btn-xs"><span
+                                            class="glyphicon glyphicon-remove"></span> Remove
+                                    </button>
+                                </form>
+
+                                <a th:href="'/admin/editCategory/'+${cat.id}" class="btn btn-info btn-xs"><span
+                                        class="glyphicon glyphicon-pencil"></span> Edit</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+    <!-- /.container -->
+</div>
+</body>
+</html>

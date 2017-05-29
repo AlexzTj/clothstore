@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html layout:decorate="layouts/default">
+<head>
+    <title>Admin page</title>
+</head>
+<body>
+<div id="content" layout:fragment="content">
+    <div class="container">
+
+        <div class="col-md-12">
+            <ul class="breadcrumb">
+                <li><a href="#">Home</a>
+                </li>
+                <li>Text page</li>
+            </ul>
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="box" id="text-page">
+                <div th:if="${sucMsg}" th:insert="layouts/fragments :: alert(type= 'success', message = ${sucMsg})" th:remove="tag"></div>
+                <a th:href="@{/admin/addProduct}">Add Product</a> |
+                <a th:href="@{/admin/categories}">View Categories</a><br/><br/>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Production code</th>
+                            <th>Price($)</th>
+                            <th>Product id</th>
+                            <th>Category id</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="prod : ${prodList}">
+                            <!--<td><img th:if="${!prod.imageMetaSet.empty}" th:src="@{${prod.imageMetaSet[0].thumbnail}}" alt=""></td>-->
+                            <td ><a th:href="@{'/detail/'+${prod.id}}" th:text="${prod.title}"></a></td>
+                            <td th:text="${prod.productCode}"></td>
+                            <td th:text="${prod.price}"></td>
+                            <td th:text="${prod.id}"></td>
+                            <td th:text="${prod.category.id}"></td>
+                            <td>
+                                <form th:action="@{'/admin/deleteProduct/' + ${prod.id}}" method="post" style="display: inline-block">
+                                    <button type="submit" data-toggle="confirmation" data-title="Remove this product?" data-popout="true" data-singleton="true"
+                                       class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Remove</button>
+                                </form>
+
+                                <a th:href="@{'/admin/editProduct/'+${prod.id}}" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <!-- /.col-md-12 -->
+    </div>
+    <!-- /.container -->
+</div>
+</body>
+</html>

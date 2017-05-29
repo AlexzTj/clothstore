@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head >
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="Obaju e-commerce template"/>
+    <meta name="author" content="Ondrej Svestka | ondrejsvestka.cz"/>
+
+    <title>
+        Obaju : e-commerce template
+    </title>
+
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100' rel='stylesheet' type='text/css'/>
+
+    <!-- styles -->
+    <link th:href="@{/resources/css/font-awesome.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/css/animate.min.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/css/owl.carousel.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/css/owl.theme.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/js/file-upload/css/jquery.fileuploader.css}" rel="stylesheet"/>
+    <link th:href="@{/resources/js/file-upload/css/jquery.fileuploader-theme-thumbnails.css}" rel="stylesheet"/>
+
+    <!-- theme stylesheet -->
+    <link th:href="@{/resources/css/style.default.css}" rel="stylesheet" id="theme-stylesheet"/>
+
+    <!-- your stylesheet with modifications -->
+    <link th:href="@{/resources/css/custom.css}" rel="stylesheet"/>
+
+    <!--<script src="js/respond.min.js"></script>-->
+
+    <link rel="shortcut icon" th:href="@{/resources/favicon.png}"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script th:src="@{/resources/js/jquery-1.11.0.min.js}"></script>
+
+</head>
+
+<body>
+
+<!-- *** TOPBAR ***
+_________________________________________________________ -->
+<div id="top" >
+    <div class="container">
+
+        <div class="col-md-6-offset-6" data-animate="fadeInDown">
+            <ul class="menu">
+                <li sec:authorize="isAnonymous()"><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li>
+                <li sec:authorize="isAnonymous()"><a  th:href="@{/login}">Register</a></li>
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/admin}">Hi, Admin</a></li>
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="POST" id="logout-form"  style="display: inline-block">
+                        <input type="submit" class="btn-link" style="color:white" value="Log out"/>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="Login">Customer login</h4>
+                </div>
+                <div class="modal-body">
+                    <div th:replace="layouts/fragments :: loginForm"></div>
+                    <p class="text-center text-muted">Not registered yet?</p>
+                    <p class="text-center text-muted"><a th:href="@{/login}"><strong>Register now</strong></a>! It is
+                        easy and done in 1&nbsp;minute and gives you access to special discounts and much more!</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:if="${errMsg}" th:inline="javascript">
+        /*<![CDATA[*/
+        $( document ).ready(function(){
+                $('#login-modal').modal('show');
+        });
+
+        /*]]>*/
+    </script>
+
+</div>
+
+<!-- *** TOP BAR END *** -->
+
+<!-- *** NAVBAR ***
+_________________________________________________________ -->
+
+<div class="navbar navbar-default yamm" role="navigation" id="navbar" >
+    <div class="container">
+        <div class="navbar-header">
+
+            <a class="navbar-brand home" href="/" data-animate-hover="bounce">
+                <img th:src="@{/resources/img/logo.png}" alt="Obaju logo" class="hidden-xs"/>
+                <img th:src="@{/resources/img/logo-small.png}" alt="Obaju logo" class="visible-xs"/><span class="sr-only">Obaju - go to homepage</span>
+            </a>
+            <div class="navbar-buttons">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+            </div>
+        </div>
+        <!--/.navbar-header -->
+
+        <div class="navbar-collapse collapse" id="navigation">
+
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="/">Home</a></li>
+                <li ><a th:href="@{/products}">Products</a></li>
+                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/orders}">Orders</a></li>
+            </ul>
+
+        </div>
+        <!--/.nav-collapse -->
+
+        <div class="navbar-buttons">
+
+            <div class="navbar-collapse collapse right" id="basket-overview">
+                <a th:href="@{/shopping-cart}" class="btn btn-primary navbar-btn"><i class="fa fa-shopping-cart"></i><span
+                        class="hidden-sm">Shopping cart</span></a>
+            </div>
+            <!--/.nav-collapse -->
+
+
+        </div>
+
+
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
+
+<!-- *** NAVBAR END *** -->
+
+
+<div id="all">
+
+    <div id="content" layout:fragment="content"></div>
+    <!-- /#content -->
+
+    <!-- *** FOOTER ***
+_________________________________________________________ -->
+    <div id="footer" data-animate="fadeInUp" >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <h4>Pages</h4>
+
+                    <ul>
+                        <li><a href="#">About us</a>
+                        </li>
+                        <li><a href="#">Terms and conditions</a>
+                        </li>
+                        <li><a href="#">FAQ</a>
+                        </li>
+                        <li><a href="#">Contact us</a>
+                        </li>
+                    </ul>
+
+                    <hr/>
+
+                    <h4>User section</h4>
+
+                    <ul>
+                        <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+                        </li>
+                        <li><a href="#">Regiter</a>
+                        </li>
+                    </ul>
+
+                    <hr class="hidden-md hidden-lg hidden-sm"/>
+
+                </div>
+                <!-- /.col-md-3 -->
+
+
+                <div class="col-md-4 col-sm-6">
+
+                    <h4>Where to find us</h4>
+
+                    <p><strong>Obaju Ltd.</strong>
+                        <br/>13/25 New Avenue
+                        <br/>New Heaven
+                        <br/>45Y 73J
+                        <br/>England
+                        <br/>
+                        <strong>Great Britain</strong>
+                    </p>
+
+                    <a href="#">Go to contact page</a>
+
+                    <hr class="hidden-md hidden-lg"/>
+
+                </div>
+                <!-- /.col-md-3 -->
+
+
+                <div class="col-md-4 col-sm-6">
+
+                    <h4>Get the news</h4>
+
+                    <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
+                        turpis egestas.</p>
+
+
+                </div>
+                <!-- /.col-md-3 -->
+
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /#footer -->
+
+    <!-- *** FOOTER END *** -->
+
+
+    <!-- *** COPYRIGHT ***
+_________________________________________________________ -->
+    <div id="copyright">
+        <div class="container">
+            <div class="col-md-6">
+                <p class="pull-left">&copy; 2015 Your name goes here.</p>
+
+            </div>
+            <div class="col-md-6">
+                <p class="pull-right">Template by <a href="https://bootstrapious.com/e-commerce-templates">Bootstrapious.com</a>
+                    <!-- Not removing these links is part of the license conditions of the template. Thanks for understanding :) If you want to use the template without the attribution links, you can do so after supporting further themes development at https://bootstrapious.com/donate  -->
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- *** COPYRIGHT END *** -->
+
+
+</div>
+<!-- /#all -->
+
+
+<!-- *** SCRIPTS TO INCLUDE ***
+_________________________________________________________ -->
+<script th:src="@{/resources/js/bootstrap.min.js}"></script>
+<script th:src="@{/resources/js/bootstrap-confirmation.min.js}"></script>
+<script th:src="@{/resources/js/waypoints.min.js}"></script>
+<script th:src="@{/resources/js/modernizr.js}"></script>
+<script th:src="@{/resources/js/bootstrap-hover-dropdown.js}"></script>
+<script th:src="@{/resources/js/owl.carousel.min.js}"></script>
+<script th:src="@{/resources/js/front.js}"></script>
+<script th:src="@{/resources/js/file-upload/js/jquery.fileuploader.min.js}"></script>
+<script th:src="@{/resources/js/file-upload/js/custom.js}"></script>
+<script th:src="@{/resources/js/angular/cartApp.js}"></script>
+</body>
+</html>
