@@ -28,3 +28,9 @@ insert into users (username,enabled,password) values('admin',1,'admin');
 insert into user_roles values(1,'ROLE_ADMIN','admin');
 ```
 
+View demo images
+add product page https://cloud.githubusercontent.com/assets/5672960/26550214/498fe25a-4485-11e7-950d-7c8ff7d89e9d.png
+detail page https://cloud.githubusercontent.com/assets/5672960/26550212/498f65e6-4485-11e7-83a5-4f90dce21f94.png
+orders page https://cloud.githubusercontent.com/assets/5672960/26550211/498ee80a-4485-11e7-960c-700fff9ffb4d.png
+maintain products page https://cloud.githubusercontent.com/assets/5672960/26550215/4990b216-4485-11e7-8024-9a928c553cad.png
+shopping cart page https://cloud.githubusercontent.com/assets/5672960/26550213/498fb03c-4485-11e7-83d5-83a45966a78e.png
