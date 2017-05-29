@@ -82,4 +82,13 @@ public class ProductDaoImpl implements ProductDao {
         return (Long) sessionFactory.getCurrentSession().createQuery("select count(distinct p.id) from Product p where p.category.id=:id")
                 .setParameter("id", categoryId).getSingleResult();
     }
+
+    @Override
+    public List<Product> getProductsByCategoryIdPaged(Integer id, Integer pageId, int pageSize) {
+        return sessionFactory.getCurrentSession().createQuery("select distinct p from Product p left join fetch p.imageMetaSet image where p.category.id = :id order by p.timestamp desc")
+                .setParameter("id", id)
+                .setFirstResult(pageId*pageSize) //offset
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
 }

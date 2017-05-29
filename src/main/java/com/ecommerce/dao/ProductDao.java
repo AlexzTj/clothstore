@@ -22,4 +22,6 @@ public interface ProductDao {
     List<Product> getProductsByCategoryId(Integer categoryId);
 
     Long countProductsByCategoryId(Integer categoryId);
+
+    List<Product> getProductsByCategoryIdPaged(Integer id, Integer pageId, int pageSize);
 }

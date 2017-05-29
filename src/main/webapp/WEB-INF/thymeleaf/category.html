@@ -24,7 +24,11 @@
             <div class="box info-bar">
                 <div class="row">
                     <div class="col-sm-12 col-md-4 products-showing">
-                        Showing <strong>[[${#lists.size(productList)}]]</strong> of <strong>[[${productCount}]]</strong> products
+                        Showing
+                        <strong th:if="${pagedListHolder.getNrOfElements()} < ${pagedListHolder.getPageSize()}">[[${pagedListHolder.getNrOfElements()}]]</strong>
+                        <strong th:if="${pagedListHolder.getNrOfElements()} > ${pagedListHolder.getPageSize()}">[[${pagedListHolder.getPage()+1}*${pagedListHolder.getPageSize()}]]</strong>
+                        of <strong>[[${pagedListHolder.getNrOfElements()}]]</strong>
+                        products
                     </div>
 
                     <!--<div class="col-sm-12 col-md-8  products-number-sort">-->
@@ -51,34 +55,25 @@
                 </div>
             </div>
 
-            <div class="row products"  ng-app="cartApp" ng-controller="cartCtrl">
-                <div class="col-md-3 col-sm-4" th:each="product : ${productList} " th:insert="layouts/fragments :: item"></div>
+            <div class="row products" ng-app="cartApp" ng-controller="cartCtrl">
+                <div class="col-md-3 col-sm-4" th:each="product : ${pagedListHolder.getPageList()} "
+                     th:insert="layouts/fragments :: item"></div>
             </div>
             <!-- /.products -->
 
-            <!--<div class="pages">-->
+            <div class="pages">
 
-            <!--<p class="loadMore">-->
-            <!--<a href="#" class="btn btn-primary btn-lg"><i class="fa fa-chevron-down"></i> Load more</a>-->
-            <!--</p>-->
+                <ul class="pagination" th:unless="${#lists.isEmpty(pagedListHolder.getPageList())}">
+                    <li th:unless="${pagedListHolder.isFirstPage()}"><a
+                            th:href="@{|/products/${categorySlug}/page/${pagedListHolder.getPage()}|}">&laquo;</a></li>
 
-            <!--<ul class="pagination">-->
-            <!--<li><a href="#">&laquo;</a>-->
-            <!--</li>-->
-            <!--<li class="active"><a href="#">1</a>-->
-            <!--</li>-->
-            <!--<li><a href="#">2</a>-->
-            <!--</li>-->
-            <!--<li><a href="#">3</a>-->
-            <!--</li>-->
-            <!--<li><a href="#">4</a>-->
-            <!--</li>-->
-            <!--<li><a href="#">5</a>-->
-            <!--</li>-->
-            <!--<li><a href="#">&raquo;</a>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</div>-->
+                    <div th:remove="tag" th:each="i : ${#numbers.sequence( 1, actualPageSize)}">
+                        <li th:classappend="${pagedListHolder.getPage()} eq ${i-1}?'active':''"><a th:href="@{@{|/products/${categorySlug}/page/${i}|}}" th:text="${i}">1</a></li>
+                    </div>
+                    <li th:unless="${pagedListHolder.isLastPage()}"><a
+                            th:href="@{|/products/${categorySlug}/page/${pagedListHolder.getPage()+2}|}">&raquo;</a></li>
+                </ul>
+            </div>
 
 
         </div>

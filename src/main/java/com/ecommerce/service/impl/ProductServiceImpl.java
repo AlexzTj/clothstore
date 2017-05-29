@@ -121,4 +121,9 @@ public class ProductServiceImpl implements ProductService {
         return productDao.countProductsByCategoryId(categoryId);
     }
 
+    @Override
+    public List<Product> getProductsByCategoryIdPaged(Integer id, Integer pageId, int pageSize) {
+        return productDao.getProductsByCategoryIdPaged(id,pageId,pageSize);
+    }
+
 }

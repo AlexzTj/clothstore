@@ -112,7 +112,7 @@ _________________________________________________________ -->
 
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/">Home</a></li>
-                <li ><a th:href="@{/products}">Products</a></li>
+                <li ><a th:href="@{/products/products}">Products</a></li>
                 <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/orders}">Orders</a></li>
             </ul>
 

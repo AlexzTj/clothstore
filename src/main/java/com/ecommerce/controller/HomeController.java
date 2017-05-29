@@ -7,6 +7,7 @@ import com.ecommerce.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,34 +51,34 @@ public class HomeController {
         return "detail";
     }
 
-    @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public String allPRoducts( Model model) {
-        Category category = categoryService.getCategoryBySlug("products");
-        if (category == null) return "404";
-        List<Product> productList = productService.getProductsByCategoryId(category.getId());
-        Long productCount = productService.countProductsByCategoryId(category.getId());
-        model.addAttribute("category", category);
-        model.addAttribute("productList", productList);
-        model.addAttribute("productCount", productCount);
-        return "category";
-    }
-
     @RequestMapping(value = "/products/{categorySlug}", method = RequestMethod.GET)
     public String category(@PathVariable String categorySlug, Model model) {
+        return categoryPaged(categorySlug, 1, model);
+    }
+
+    @RequestMapping(value = "/products/{categorySlug}/page/{pageId}", method = RequestMethod.GET)
+    public String categoryPaged(@PathVariable("categorySlug") String categorySlug, @PathVariable("pageId") Integer pageId, Model model) {
         Category category = categoryService.getCategoryBySlug(categorySlug);
         if (category == null) return "404";
+        if (--pageId < 0) return "404";
+        int pageSize = 10;
         List<Product> productList = productService.getProductsByCategoryId(category.getId());
-        Long productCount = productService.countProductsByCategoryId(category.getId());
+        PagedListHolder<Product> pagedListHolder = new PagedListHolder<>(productList);
+        pagedListHolder.setPage(pageId);
+        pagedListHolder.setPageSize(pageSize);
+        pagedListHolder.setMaxLinkedPages(5);
         model.addAttribute("category", category);
-        model.addAttribute("productList", productList);
-        model.addAttribute("productCount", productCount);
+        model.addAttribute("categorySlug", categorySlug);
+        model.addAttribute("pagedListHolder", pagedListHolder);
+        model.addAttribute("actualPageSize",
+                pagedListHolder.getMaxLinkedPages() > pagedListHolder.getPageCount() ? pagedListHolder.getPageCount() : pagedListHolder.getMaxLinkedPages());
         return "category";
     }
 
 
-    @RequestMapping(value="/error")
+    @RequestMapping(value = "/error")
     public ModelAndView handleAll(HttpServletRequest request) {
-        LOGGER.error("Request: " + request.getRequestURL() );
+        LOGGER.error("Request: " + request.getRequestURL());
 
         ModelAndView mav = new ModelAndView();
         mav.addObject("reason", request.getAttribute("javax.servlet.error.message"));
@@ -85,9 +86,10 @@ public class HomeController {
         mav.setViewName("error");
         return mav;
     }
-    @RequestMapping(value="/403")
+
+    @RequestMapping(value = "/403")
     public String handle403(HttpServletRequest request) {
-        LOGGER.error("Access denied: " + request.getRequestURL() );
+        LOGGER.error("Access denied: " + request.getRequestURL());
 
         return "403";
     }
